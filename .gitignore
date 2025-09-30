@@ -1,0 +1,6 @@
+# Ignore C++ build artifacts
+*.exe
+*.o
+
+# Ignore VS Code configuration files
+.vscode/
