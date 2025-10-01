@@ -1,12 +1,14 @@
 #include "Juego.h"
 #include <iostream>
-#include <limits>
 #include <cstdlib>
 #include <ctime>
-#include "global.h"
+#include <limits>
+#include "Movimiento.h"
+#include <vector>
 
 Juego::Juego() {
     srand(static_cast<unsigned int>(time(0)));
+    ui = std::make_unique<UI>();
 
     jugador = std::make_unique<Entrenador>("Ash");
     rival = std::make_unique<Entrenador>("Lance");
@@ -19,7 +21,7 @@ Juego::Juego() {
 
     auto charmander = std::make_unique<Pokemon>("Charmander", std::vector<Tipo>{FUEGO}, 95, 22, 6);
     charmander->agregarMovimiento(Movimiento("Llamarada", FUEGO, 40));
-    charmander->agregarMovimiento(Movimiento("Araniazo", NORMAL, 10));
+    charmander->agregarMovimiento(Movimiento("Arañazo", NORMAL, 10));
     jugador->agregarPokemon(std::move(charmander));
 
     auto bulbasaur = std::make_unique<Pokemon>("Bulbasaur", std::vector<Tipo>{PLANTA, VENENO}, 100, 18, 8);
@@ -35,7 +37,7 @@ Juego::Juego() {
     
     auto dragonite = std::make_unique<Pokemon>("Dragonite", std::vector<Tipo>{DRAGON, VOLADOR}, 110, 24, 9);
     dragonite->agregarMovimiento(Movimiento("Dragoaliento", DRAGON, 35));
-    dragonite->agregarMovimiento(Movimiento("Punio Fuego", FUEGO, 30));
+    dragonite->agregarMovimiento(Movimiento("Puño Fuego", FUEGO, 30));
     rival->agregarPokemon(std::move(dragonite));
 
     auto onix = std::make_unique<Pokemon>("Onix", std::vector<Tipo>{ROCA, TIERRA}, 120, 15, 12);
@@ -53,30 +55,20 @@ Juego::Juego() {
 //     delete rival;
 // }
 
-void Juego::limpiarBuffer() {
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-}
-
 void Juego::mostrarEstado() const {
-    std::cout << BLUE << "\n--- Estado del Combate ---" << RESET << std::endl;
-    std::cout << "Tu ";
-    pokemonActivoJugador->mostrar();
-    std::cout << " vs. " << "Rival's ";
-    pokemonActivoRival->mostrar();
-    std::cout << RESET << std::endl;
+    ui->mostrarEstado(pokemonActivoJugador, pokemonActivoRival);
 }
 
 Pokemon* Juego::elegirPokemon(Entrenador* entrenador) {
     int idx;
     do {
-        entrenador->mostrarEquipo();
-        std::cout << "Elige un Pokemon: ";
-        std::cin >> idx;
-        limpiarBuffer();
-        if (idx > 0 && static_cast<size_t>(idx) <= entrenador->getEquipo().size() && entrenador->getEquipo()[idx - 1]->estaVivo()) {
+        ui->mostrarEquipo(*entrenador);
+        idx = ui->obtenerEleccion("Elige un Pokemon: ", entrenador->getEquipo().size());
+        
+        if (entrenador->getEquipo()[idx - 1]->estaVivo()) {
             return entrenador->getEquipo()[idx - 1].get();
         } else {
-            std::cout << "Seleccion invalida. Intenta de nuevo." << std::endl;
+            ui->mostrarMensaje("Selección inválida. Intenta de nuevo.");
         }
     } while (true);
 }
@@ -86,67 +78,54 @@ void Juego::accionRival() {
         for (const auto& item : rival->getBolsa()) {
             if (item->disponible()) {
                 item->usar(*pokemonActivoRival);
+                ui->mostrarMensajeCombate(rival->getNombre() + " usa una " + item->getNombre() + "!");
                 return;
             }
         }
     }
     
-    std::cout << YELLOW << rival->getNombre() << " ataca..." << RESET << std::endl;
-    // La IA del rival usa un movimiento aleatorio
+    ui->mostrarMensajeCombate(rival->getNombre() + " ataca...");
     int numMovimientos = pokemonActivoRival->getMovimientos().size();
     int movimientoElegido = rand() % numMovimientos;
     pokemonActivoRival->atacar(*pokemonActivoJugador, pokemonActivoRival->getMovimiento(movimientoElegido));
 }
 
 void Juego::iniciarCombate() {
-    std::cout << GREEN << "=== Combate Pokemon 3 vs 3! ===" << RESET << std::endl;
-    // jugador->mostrarEquipo();
-    rival->mostrarEquipo();
+    ui->mostrarMensaje("=== Combate Pokemon 3 vs 3! ===", GREEN);
+    // ui->mostrarEquipo(*jugador);
+    ui->mostrarEquipo(*rival);
     
-    std::cout << CYAN << "Elige tu Pokemon inicial:" << RESET << std::endl;
+    ui->mostrarMensaje("Elige tu Pokemon inicial:", CYAN);
     pokemonActivoJugador = elegirPokemon(jugador.get());
-    std::cout << CYAN << "¡Adelante, " << pokemonActivoJugador->getNombre() << "!" << RESET << std::endl;
+    ui->mostrarMensaje("¡Adelante, " + pokemonActivoJugador->getNombre() + "!", CYAN);
     
     pokemonActivoRival = rival->getEquipo()[rand() % rival->getEquipo().size()].get();
     while (!pokemonActivoRival->estaVivo()) {
         pokemonActivoRival = rival->getEquipo()[rand() % rival->getEquipo().size()].get();
     }
-    std::cout << CYAN << rival->getNombre() << " envia a " << pokemonActivoRival->getNombre() << "!" << RESET << std::endl;
+    ui->mostrarMensaje(rival->getNombre() + " envia a " + pokemonActivoRival->getNombre() + "!", CYAN);
     
     int turno = 1;
     while (jugador->tienePokemonVivo() && rival->tienePokemonVivo()) {
-        std::cout << BLUE << "\n--- Turno " << turno++ << " ---" << RESET << std::endl;
+        ui->mostrarMensaje("\n--- Turno " + std::to_string(turno++) + " ---", BLUE);
         mostrarEstado();
         
-        std::cout << "Accion: (1)Luchar (2)Bolsa (3)Pokemon -> ";
-        int accion;
-        std::cin >> accion;
-        limpiarBuffer();
+        int accion = ui->obtenerEleccion("Accion: (1)Luchar (2)Bolsa (3)Pokemon -> ", 3);
         
         switch (accion) {
             case 1: {
-                std::cout << "Elige un movimiento:" << std::endl;
-                // Mostrar los movimientos del Pokemon activo para que el jugador elija
-                for (size_t i = 0; i < pokemonActivoJugador->getMovimientos().size(); ++i) {
-                    std::cout << i + 1 << ". " << pokemonActivoJugador->getMovimiento(i).getNombre() << std::endl;
-                }
-                int eleccionMovimiento;
-                std::cin >> eleccionMovimiento;
-                limpiarBuffer();
+                int eleccionMovimiento = ui->obtenerOpcionLucha(*pokemonActivoJugador);
                 
                 if (eleccionMovimiento > 0 && static_cast<size_t>(eleccionMovimiento) <= pokemonActivoJugador->getMovimientos().size()) {
                     pokemonActivoJugador->atacar(*pokemonActivoRival, pokemonActivoJugador->getMovimiento(eleccionMovimiento - 1));
                 } else {
-                    std::cout << "Seleccion de movimiento invalida. Pierdes el turno." << std::endl;
+                    ui->mostrarMensaje("Selección de movimiento inválida. Pierdes el turno.");
                 }
                 break;
             }
             case 2: {
-                jugador->mostrarBolsa();
-                int op;
-                std::cout << "Elige item: ";
-                std::cin >> op;
-                limpiarBuffer();
+                ui->mostrarBolsa(*jugador);
+                int op = ui->obtenerEleccion("Elige item: ", jugador->getBolsa().size());
                 if (op > 0 && static_cast<size_t>(op) <= jugador->getBolsa().size()) {
                     Item* itemElegido = jugador->getBolsa()[op - 1].get();
                     itemElegido->usar(*pokemonActivoJugador);
@@ -157,7 +136,7 @@ void Juego::iniciarCombate() {
                 pokemonActivoJugador = elegirPokemon(jugador.get());
                 break;
             default:
-                std::cout << "Accion invalida." << std::endl;
+                ui->mostrarMensaje("Accion invalida.");
                 break;
         }
         
@@ -166,28 +145,28 @@ void Juego::iniciarCombate() {
         }
         
         if (!pokemonActivoRival->estaVivo()) {
-            std::cout << RED << pokemonActivoRival->getNombre() << " se ha debilitado!" << RESET << std::endl;
+            ui->mostrarMensaje(pokemonActivoRival->getNombre() + " se ha debilitado!", RED);
             if (rival->tienePokemonVivo()) {
                 pokemonActivoRival = rival->getEquipo()[rand() % rival->getEquipo().size()].get();
                 while (!pokemonActivoRival->estaVivo()) {
                     pokemonActivoRival = rival->getEquipo()[rand() % rival->getEquipo().size()].get();
                 }
-                std::cout << CYAN << rival->getNombre() << " envia a " << pokemonActivoRival->getNombre() << "!" << RESET << std::endl;
+                ui->mostrarMensaje(rival->getNombre() + " envia a " + pokemonActivoRival->getNombre() + "!", CYAN);
             }
         }
         
         if (!pokemonActivoJugador->estaVivo()) {
-            std::cout << RED << pokemonActivoJugador->getNombre() << " se ha debilitado!" << RESET << std::endl;
+            ui->mostrarMensaje(pokemonActivoJugador->getNombre() + " se ha debilitado!", RED);
             if (jugador->tienePokemonVivo()) {
-                std::cout << "Debes elegir un nuevo Pokemon." << std::endl;
+                ui->mostrarMensaje("Debes elegir un nuevo Pokemon.");
                 pokemonActivoJugador = elegirPokemon(jugador.get());
             }
         }
     }
     
     if (jugador->tienePokemonVivo()) {
-        std::cout << GREEN << "Has ganado el combate!" << RESET << std::endl;
+        ui->mostrarMensaje("¡Has ganado el combate!", GREEN);
     } else {
-        std::cout << RED << "Has perdido el combate!" << RESET << std::endl;
+        ui->mostrarMensaje("¡Has perdido el combate!", RED);
     }
 }

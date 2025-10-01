@@ -5,11 +5,13 @@
 #include "Entrenador.h"
 #include "Pokemon.h"
 #include "Item.h"
+#include "UI.h"
 
 class Juego {
 private:
     std::unique_ptr<Entrenador> jugador;
     std::unique_ptr<Entrenador> rival;
+    std::unique_ptr<UI> ui;
     Pokemon* pokemonActivoJugador;
     Pokemon* pokemonActivoRival;
 

@@ -57,12 +57,12 @@ void Pokemon::atacar(Pokemon& objetivo, const Movimiento& movimiento) {
 
     dmg *= efectividadTotal;
 
-    std::cout << nombre << " usa " << movimiento.getNombre() << " y causa " << dmg << " de danio a " 
+    std::cout << nombre << " usa " << movimiento.getNombre() << " y causa " << dmg << " de daño a " 
               << objetivo.getNombre() << "." << std::endl;
     
     // Mensajes de efectividad
     if (efectividadTotal >= 2.0) {
-        std::cout << YELLOW << "Es super efectivo!" << RESET << std::endl;
+        std::cout << YELLOW << "¡Es súper efectivo!" << RESET << std::endl;
     } else if (efectividadTotal < 1.0 && efectividadTotal > 0.0) {
         std::cout << CYAN << "No es muy efectivo..." << RESET << std::endl;
     } else if (efectividadTotal == 0.0) {
