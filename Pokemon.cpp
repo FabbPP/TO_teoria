@@ -18,6 +18,10 @@ Movimiento Pokemon::getMovimiento(int index) const { return movimientos.at(index
 
 const std::vector<Tipo>& Pokemon::getTipos() const { return tipos; }
 
+const std::vector<Movimiento>& Pokemon::getMovimientos() const {
+    return movimientos;
+}
+
 void Pokemon::mostrar() const {
     std::cout << nombre << " [" << vida << "/" << vidaMax << "]";
 }

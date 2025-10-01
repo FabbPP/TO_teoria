@@ -35,6 +35,7 @@ public:
     // void atacar(Pokemon& objetivo);
 
     const std::vector<Tipo>& getTipos() const;
+    const std::vector<Movimiento>& getMovimientos() const;
     void atacar(Pokemon& objetivo, const Movimiento& movimiento);
 };
 

@@ -1,14 +1,15 @@
 #ifndef JUEGO_H
 #define JUEGO_H
 
+#include <memory>
 #include "Entrenador.h"
 #include "Pokemon.h"
 #include "Item.h"
 
 class Juego {
 private:
-    Entrenador* jugador;
-    Entrenador* rival;
+    std::unique_ptr<Entrenador> jugador;
+    std::unique_ptr<Entrenador> rival;
     Pokemon* pokemonActivoJugador;
     Pokemon* pokemonActivoRival;
 
@@ -20,7 +21,7 @@ private:
 
 public:
     Juego();
-    ~Juego();
+    // ~Juego();
     void iniciarCombate();
 };
 

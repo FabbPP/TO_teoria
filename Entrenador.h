@@ -3,28 +3,26 @@
 
 #include <string>
 #include <vector>
+#include <memory> 
 #include "Pokemon.h"
 #include "Item.h"
 
-using namespace std;
-
 class Entrenador {
 private:
-    string nombre;
-    vector<Pokemon*> equipo;
-    vector<Item*> bolsa;
+    std::string nombre;
+    std::vector<std::unique_ptr<Pokemon>> equipo;
+    std::vector<std::unique_ptr<Item>> bolsa;
 
 public:
-    Entrenador(string n);
-    ~Entrenador(); // Destructor 
+    Entrenador(std::string n);
 
-    // Getters
-    string getNombre() const;
-    vector<Pokemon*>& getEquipo();
-    vector<Item*>& getBolsa();
+    // Getters 
+    const std::string getNombre() const;
+    const std::vector<std::unique_ptr<Pokemon>>& getEquipo() const;
+    const std::vector<std::unique_ptr<Item>>& getBolsa() const;
 
-    void agregarPokemon(Pokemon* p);
-    void agregarItem(Item* i);
+    void agregarPokemon(std::unique_ptr<Pokemon> p);
+    void agregarItem(std::unique_ptr<Item> i);
     bool tienePokemonVivo() const;
     void mostrarEquipo() const;
     void mostrarBolsa() const;
