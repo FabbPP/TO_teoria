@@ -2,23 +2,27 @@
 #define POKEMON_H
 
 #include <string>
-#include <iostream>
-
-using namespace std;
+#include <vector>
+#include "Movimiento.h"
 
 class Pokemon {
 private:
-    string nombre;
+    std::string nombre;
+    std::vector<Tipo> tipos; 
+    std::vector<Movimiento> movimientos; 
     int vida;
     int vidaMax;
     int ataque;
     int defensa;
 
 public:
-    Pokemon(string n, int v, int a, int d);
+    Pokemon(std::string n, std::vector<Tipo> t, int v, int a, int d);
+
+    void agregarMovimiento(const Movimiento& m);
+    Movimiento getMovimiento(int index) const;
 
     // Getters
-    string getNombre() const;
+    std::string getNombre() const;
     int getVida() const;
     int getVidaMax() const;
     int getAtaque() const;
@@ -28,7 +32,10 @@ public:
     void mostrar() const;
     void recibirDaño(int dmg);
     void curar(int cantidad);
-    void atacar(Pokemon& objetivo);
+    // void atacar(Pokemon& objetivo);
+
+    const std::vector<Tipo>& getTipos() const;
+    void atacar(Pokemon& objetivo, const Movimiento& movimiento);
 };
 
 #endif // POKEMON_H
