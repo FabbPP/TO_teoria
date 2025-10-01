@@ -1,6 +1,11 @@
 #include "Movimiento.h"
+#include "Pokemon.h" 
+#include "UI.h" 
 #include <iostream>
 #include <vector>
+#include "global.h"
+
+UI ui;
 
 Movimiento::Movimiento(std::string n, Tipo t, int p)
     : nombre(n), tipo(t), potencia(p) {}
@@ -37,6 +42,48 @@ double calcularEfectividad(Tipo atacante, Tipo defensor) {
     int indiceDefensor = static_cast<int>(defensor);
     
     return tablaEfectividad[indiceAtacante][indiceDefensor];
+}
+
+// Implementación base del efecto (potencia > 0)
+void Movimiento::aplicarEfecto(Pokemon& atacante, Pokemon& objetivo) const {
+    if (potencia > 0) {
+        double efectividadTotal = 1.0;
+        for (Tipo tipoDefensor : objetivo.getTipos()) {
+            efectividadTotal *= calcularEfectividad(this->getTipo(), tipoDefensor);
+        }
+        
+        int dmg = (atacante.getAtaque() + this->getPotencia()) - (objetivo.getDefensa() / 2);
+        if (dmg < 1) dmg = 1;
+        dmg *= efectividadTotal;
+        ui.mostrarMensajeCombate(atacante.getNombre() + " usa " + this->getNombre() + " y causa " + std::to_string(dmg) + " de daño a " + objetivo.getNombre() + ".");
+        
+        if (efectividadTotal >= 2.0) {
+            ui.mostrarMensaje("¡Es súper efectivo!", YELLOW);
+        } else if (efectividadTotal < 1.0 && efectividadTotal > 0.0) {
+            ui.mostrarMensaje("No es muy efectivo...", CYAN);
+        } else if (efectividadTotal == 0.0) {
+            ui.mostrarMensaje("No tiene efecto...", CYAN);
+        }
+        objetivo.recibirDaño(dmg);
+    } else {
+        ui.mostrarMensaje(atacante.getNombre() + " usa " + this->getNombre() + ".");
+    }
+}
+
+// Implementación de MovimientoEstado
+MovimientoEstado::MovimientoEstado(std::string n, Tipo t, int p)
+    : Movimiento(n, t, p) {}
+void MovimientoEstado::aplicarEfecto(Pokemon& atacante, Pokemon& objetivo) const {
+    Movimiento::aplicarEfecto(atacante, objetivo); 
+    ui.mostrarMensaje(objetivo.getNombre() + " ha sido envenenado!", MAGENTA);
+}
+
+// Implementación de MovimientoCuracion
+MovimientoCuracion::MovimientoCuracion(std::string n, Tipo t, int p, int curacion)
+    : Movimiento(n, t, p), cantidadCuracion(curacion) {}
+void MovimientoCuracion::aplicarEfecto(Pokemon& atacante, Pokemon& objetivo) const {
+    ui.mostrarMensaje(atacante.getNombre() + " usa " + this->getNombre() + " y se cura " + std::to_string(cantidadCuracion) + " puntos de vida!", GREEN);
+    atacante.curar(cantidadCuracion);
 }
 
 // Función para obtener el nombre del tipo como string

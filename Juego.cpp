@@ -15,34 +15,37 @@ Juego::Juego() {
     
     //Jugador
     auto pikachu = std::make_unique<Pokemon>("Pikachu", std::vector<Tipo>{ELECTRICO}, 80, 25, 5);
-    pikachu->agregarMovimiento(Movimiento("Impactrueno", ELECTRICO, 30));
-    pikachu->agregarMovimiento(Movimiento("Placaje", NORMAL, 10));
+    pikachu->agregarMovimiento(std::make_unique<Movimiento>("Impactrueno", ELECTRICO, 30));
+    pikachu->agregarMovimiento(std::make_unique<Movimiento>("Placaje", NORMAL, 10));
     jugador->agregarPokemon(std::move(pikachu));
-
+    
     auto charmander = std::make_unique<Pokemon>("Charmander", std::vector<Tipo>{FUEGO}, 95, 22, 6);
-    charmander->agregarMovimiento(Movimiento("Llamarada", FUEGO, 40));
-    charmander->agregarMovimiento(Movimiento("Arañazo", NORMAL, 10));
+    charmander->agregarMovimiento(std::make_unique<Movimiento>("Llamarada", FUEGO, 40));
+    charmander->agregarMovimiento(std::make_unique<Movimiento>("Arañazo", NORMAL, 10));
+    // Ejemplo de movimiento de curación
+    charmander->agregarMovimiento(std::make_unique<MovimientoCuracion>("Recuperacion", NORMAL, 0, 20)); 
     jugador->agregarPokemon(std::move(charmander));
-
+    
     auto bulbasaur = std::make_unique<Pokemon>("Bulbasaur", std::vector<Tipo>{PLANTA, VENENO}, 100, 18, 8);
-    bulbasaur->agregarMovimiento(Movimiento("Latigo Cepa", PLANTA, 25));
-    bulbasaur->agregarMovimiento(Movimiento("Bomba Lodo", VENENO, 30));
+    bulbasaur->agregarMovimiento(std::make_unique<Movimiento>("Latigo Cepa", PLANTA, 25));
+    // Ejemplo de movimiento de estado
+    bulbasaur->agregarMovimiento(std::make_unique<MovimientoEstado>("Bomba Lodo", VENENO, 30)); 
     jugador->agregarPokemon(std::move(bulbasaur));
 
     // Rival
     auto gyarados = std::make_unique<Pokemon>("Gyarados", std::vector<Tipo>{AGUA, VOLADOR}, 105, 21, 7);
-    gyarados->agregarMovimiento(Movimiento("Cascada", AGUA, 30));
-    gyarados->agregarMovimiento(Movimiento("Mordisco", SINIESTRO, 20));
+    gyarados->agregarMovimiento(std::make_unique<Movimiento>("Cascada", AGUA, 30));
+    gyarados->agregarMovimiento(std::make_unique<Movimiento>("Mordisco", SINIESTRO, 20));
     rival->agregarPokemon(std::move(gyarados));
     
     auto dragonite = std::make_unique<Pokemon>("Dragonite", std::vector<Tipo>{DRAGON, VOLADOR}, 110, 24, 9);
-    dragonite->agregarMovimiento(Movimiento("Dragoaliento", DRAGON, 35));
-    dragonite->agregarMovimiento(Movimiento("Puño Fuego", FUEGO, 30));
+    dragonite->agregarMovimiento(std::make_unique<Movimiento>("Dragoaliento", DRAGON, 35));
+    dragonite->agregarMovimiento(std::make_unique<Movimiento>("Puño Fuego", FUEGO, 30));
     rival->agregarPokemon(std::move(dragonite));
 
     auto onix = std::make_unique<Pokemon>("Onix", std::vector<Tipo>{ROCA, TIERRA}, 120, 15, 12);
-    onix->agregarMovimiento(Movimiento("Lanzarrocas", ROCA, 25));
-    onix->agregarMovimiento(Movimiento("Excavar", TIERRA, 30));
+    onix->agregarMovimiento(std::make_unique<Movimiento>("Lanzarrocas", ROCA, 25));
+    onix->agregarMovimiento(std::make_unique<Movimiento>("Excavar", TIERRA, 30));
     rival->agregarPokemon(std::move(onix));
 
     // Agregar items a las bolsas
