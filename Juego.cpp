@@ -4,6 +4,7 @@
 #include <ctime>
 #include <limits>
 #include "Movimiento.h"
+#include "MovimientoMultiGolpe.h"
 #include <vector>
 
 Juego::Juego() {
@@ -17,6 +18,10 @@ Juego::Juego() {
     auto pikachu = std::make_unique<Pokemon>("Pikachu", std::vector<Tipo>{ELECTRICO}, 80, 25, 5);
     pikachu->agregarMovimiento(std::make_unique<Movimiento>("Impactrueno", ELECTRICO, 30));
     pikachu->agregarMovimiento(std::make_unique<Movimiento>("Placaje", NORMAL, 10));
+    
+    //nuevo movimiento multigolpe
+    pikachu->agregarMovimiento(std::make_unique<MovimientoMultiGolpe>("Doble Bofetón", NORMAL, 8, 2));
+
     jugador->agregarPokemon(std::move(pikachu));
     
     auto charmander = std::make_unique<Pokemon>("Charmander", std::vector<Tipo>{FUEGO}, 95, 22, 6);

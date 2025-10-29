@@ -45,6 +45,8 @@ public:
     void aplicarEfecto(Pokemon& atacante, Pokemon& objetivo) const override;
 };
 
+
+
 // Función global para calcular la efectividad del tipo
 double calcularEfectividad(Tipo atacante, Tipo defensor);
 
