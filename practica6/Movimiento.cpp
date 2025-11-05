@@ -35,7 +35,7 @@ void Movimiento::mostrarMensajeEfectividad(double multiplicador) const {
     if (!mostrador) return;
     
     if (multiplicador >= 1.5) {
-        mostrador->mostrarMensaje("¡El tipo es muy fuerte contra el oponente!", YELLOW);
+        mostrador->mostrarMensaje(" El tipo es muy fuerte contra el oponente!", YELLOW);
     } else if (multiplicador >= 1.2) {
         mostrador->mostrarMensaje("El tipo tiene ventaja.", GREEN);
     } else if (multiplicador <= 0.7) {

@@ -1,11 +1,13 @@
 #include "Movimiento.h"
 #include "Pokemon.h" 
 #include "UI.h" 
+#include "CalculadorDano.h"
 #include <iostream>
 #include <vector>
 #include "global.h"
 
 UI ui;
+CalculadorDano calculadorDano; 
 
 Movimiento::Movimiento(std::string n, Tipo t, int p)
     : nombre(n), tipo(t), potencia(p) {}
@@ -36,7 +38,6 @@ const std::vector<std::vector<double>> tablaEfectividad = {
 /* HADA     */ {1.0, 0.5, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 2.0, 1.0}
 };
 
-// Tabla de efectividad de tipos
 double calcularEfectividad(Tipo atacante, Tipo defensor) {
     int indiceAtacante = static_cast<int>(atacante);
     int indiceDefensor = static_cast<int>(defensor);
@@ -44,27 +45,26 @@ double calcularEfectividad(Tipo atacante, Tipo defensor) {
     return tablaEfectividad[indiceAtacante][indiceDefensor];
 }
 
-// Implementación base del efecto (potencia > 0)
 void Movimiento::aplicarEfecto(Pokemon& atacante, Pokemon& objetivo) const {
     if (potencia > 0) {
-        double efectividadTotal = 1.0;
-        for (Tipo tipoDefensor : objetivo.getTipos()) {
-            efectividadTotal *= calcularEfectividad(this->getTipo(), tipoDefensor);
-        }
+        //para calcular
+        ResultadoDano resultado = calculadorDano.calcularDano(atacante, objetivo, *this);
         
-        int dmg = (atacante.getAtaque() + this->getPotencia()) - (objetivo.getDefensa() / 2);
-        if (dmg < 1) dmg = 1;
-        dmg *= efectividadTotal;
-        ui.mostrarMensajeCombate(atacante.getNombre() + " usa " + this->getNombre() + " y causa " + std::to_string(dmg) + " de daño a " + objetivo.getNombre() + ".");
-        
-        if (efectividadTotal >= 2.0) {
-            ui.mostrarMensaje("¡Es súper efectivo!", YELLOW);
-        } else if (efectividadTotal < 1.0 && efectividadTotal > 0.0) {
-            ui.mostrarMensaje("No es muy efectivo...", CYAN);
-        } else if (efectividadTotal == 0.0) {
-            ui.mostrarMensaje("No tiene efecto...", CYAN);
+        std::string mensaje = atacante.getNombre() + " usa " + this->getNombre();
+        if (resultado.esCritico) {
+            mensaje += " ¡Golpe critico¡";
         }
-        objetivo.recibirDaño(dmg);
+        mensaje += " y causa " + std::to_string(resultado.dano) + " de daño a " + objetivo.getNombre() + ".";
+        ui.mostrarMensajeCombate(mensaje);
+        ui.mostrarMensaje("--Calculamos efectividad",GREEN);
+        if (resultado.efectividad >= 2.0) {
+            ui.mostrarMensaje("Muye efectivo", YELLOW);
+        } else if (resultado.efectividad < 1.0 && resultado.efectividad > 0.0) {
+            ui.mostrarMensaje("no muy efectivo", CYAN);
+        } else {
+            ui.mostrarMensaje("no tiene efecto", CYAN);
+        }
+        objetivo.recibirDaño(resultado.dano);
     } else {
         ui.mostrarMensaje(atacante.getNombre() + " usa " + this->getNombre() + ".");
     }

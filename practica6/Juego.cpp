@@ -217,8 +217,8 @@ void Juego::iniciarCombate() {
     }
     
     if (jugador->tienePokemonVivo()) {
-        ui->mostrarMensaje("¡Has ganado el combate!", GREEN);
+        ui->mostrarMensaje(" Has ganado el combate!", GREEN);
     } else {
-        ui->mostrarMensaje("¡Has perdido el combate!", RED);
+        ui->mostrarMensaje(" Has perdido el combate!", RED);
     }
 }

@@ -28,7 +28,7 @@ void MovimientoMultiGolpe::aplicarEfecto(Pokemon& atacante, Pokemon& objetivo) c
         
         if (mostrador) {
             mostrador->mostrarMensaje(
-                "¡Golpe " + std::to_string(i + 1) + "! Causa " + std::to_string(dmg) + " de dano.", 
+                "Golpe " + std::to_string(i + 1) + "! Causa " + std::to_string(dmg) + " de dano.", 
                 YELLOW
             );
         }
@@ -39,7 +39,7 @@ void MovimientoMultiGolpe::aplicarEfecto(Pokemon& atacante, Pokemon& objetivo) c
     
     if (mostrador) {
         mostrador->mostrarMensaje(
-            "¡" + std::to_string(golpesAcertados) + " golpes acertados!", 
+            "" + std::to_string(golpesAcertados) + " golpes acertados!", 
             GREEN
         );
         
