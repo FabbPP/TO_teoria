@@ -3,7 +3,7 @@
 #include "global.h"
 
 // Implementación de métodos
-Pokemon::Pokemon(std::string n, std::vector<Tipo> t, int v, int a, int d)
+Pokemon::Pokemon(std::string n, std::vector<std::shared_ptr<TipoElemento>> t, int v, int a, int d)
     : nombre(n), tipos(t), vida(v), vidaMax(v), ataque(a), defensa(d) {}
 
 std::string Pokemon::getNombre() const { return nombre; }
@@ -21,7 +21,9 @@ const Movimiento& Pokemon::getMovimiento(int index) const {
     return *movimientos.at(index); 
 }
 
-const std::vector<Tipo>& Pokemon::getTipos() const { return tipos; }
+const std::vector<std::shared_ptr<TipoElemento>>& Pokemon::getTipos() const { 
+    return tipos; 
+}
 
 const std::vector<std::unique_ptr<Movimiento>>& Pokemon::getMovimientos() const {
     return movimientos;
@@ -31,7 +33,7 @@ void Pokemon::mostrar() const {
     std::cout << nombre << " [" << vida << "/" << vidaMax << "]";
 }
 
-void Pokemon::recibirDaño(int dmg) {
+void Pokemon::recibirDano(int dmg) {
     vida -= dmg;
     if (vida < 0) vida = 0;
 }
@@ -44,31 +46,3 @@ void Pokemon::curar(int cantidad) {
 void Pokemon::atacar(Pokemon& objetivo, const Movimiento& movimiento) {
     movimiento.aplicarEfecto(*this, objetivo);
 }
-
-// void Pokemon::atacar(Pokemon& objetivo, const Movimiento& movimiento) {
-//     double efectividadTotal = 1.0;
-    
-//     // Multiplica la efectividad para cada uno de los tipos
-//     for (Tipo tipoDefensor : objetivo.getTipos()) {
-//         efectividadTotal *= calcularEfectividad(movimiento.getTipo(), tipoDefensor);
-//     }
-    
-//     int dmg = (ataque + movimiento.getPotencia()) - (objetivo.getDefensa() / 2);
-//     if (dmg < 1) dmg = 1;
-
-//     dmg *= efectividadTotal;
-
-//     std::cout << nombre << " usa " << movimiento.getNombre() << " y causa " << dmg << " de daño a " 
-//               << objetivo.getNombre() << "." << std::endl;
-    
-//     // Mensajes de efectividad
-//     if (efectividadTotal >= 2.0) {
-//         std::cout << YELLOW << "¡Es súper efectivo!" << RESET << std::endl;
-//     } else if (efectividadTotal < 1.0 && efectividadTotal > 0.0) {
-//         std::cout << CYAN << "No es muy efectivo..." << RESET << std::endl;
-//     } else if (efectividadTotal == 0.0) {
-//         std::cout << CYAN << "No tiene efecto..." << RESET << std::endl;
-//     }
-
-//     objetivo.recibirDaño(dmg);
-// }

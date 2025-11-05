@@ -8,16 +8,19 @@
 #include "Pokemon.h"
 #include "Item.h"
 #include "global.h"
+#include "Interfaces.h"  // DIP: depende de abstracción
 
-
-class UI {
+// DIP: UI implementa la interfaz IMostrador
+class UI : public IMostrador {
 public:
     // Métodos para mostrar información
     void mostrarEstado(const Pokemon* jugador, const Pokemon* rival) const;
     void mostrarEquipo(const Entrenador& entrenador) const;
     void mostrarBolsa(const Entrenador& entrenador) const;
-    void mostrarMensaje(const std::string& mensaje, const std::string& color = RESET) const;
-    void mostrarMensajeCombate(const std::string& mensaje) const;
+    
+    // Implementación de IMostrador (DIP)
+    void mostrarMensaje(const std::string& mensaje, const std::string& color = RESET) const override;
+    void mostrarMensajeCombate(const std::string& mensaje) const override;
 
     // Métodos para obtener la entrada del usuario
     int obtenerEleccion(const std::string& mensaje, int maxOpciones) const;
