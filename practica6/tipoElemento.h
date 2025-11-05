@@ -56,5 +56,20 @@ public:
     }
 };
 
+class TipoPlanta : public TipoElemento {
+public:
+    TipoPlanta() : TipoElemento("Planta", 70.0) {}  
+    void mostrarInfo() const override {
+        std::cout << "Tipo Planta - Fuerza: " << fuerza << std::endl;
+    }
+};
+
+class TipoVeneno : public TipoElemento {
+public:
+    TipoVeneno() : TipoElemento("Veneno", 60.0) {}  
+    void mostrarInfo() const override {
+        std::cout << "Tipo Veneno - Fuerza: " << fuerza << std::endl;
+    }
+};
 
 #endif // TIPO_ELEMENTO_H

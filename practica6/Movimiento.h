@@ -2,55 +2,43 @@
 #define MOVIMIENTO_H
 
 #include <string>
+#include <memory>
 #include <vector>
+#include "TipoElemento.h"
 
-class Pokemon; 
-
-// Tipos de Pokémon
-enum Tipo {
-    NORMAL, FUEGO, AGUA, PLANTA, ELECTRICO, HIELO, LUCHA, VENENO,
-    TIERRA, VOLADOR, PSIQUICO, BICHO, ROCA, FANTASMA, DRAGON, ACERO,
-    SINIESTRO, HADA, NINGUNO 
-};
+class Pokemon;
 
 class Movimiento {
-protected: 
+protected:
     std::string nombre;
-    Tipo tipo;
+    std::shared_ptr<TipoElemento> tipo;
     int potencia;
 
 public:
-    Movimiento(std::string n, Tipo t, int p);
-    virtual ~Movimiento() = default; 
+    Movimiento(std::string n, std::shared_ptr<TipoElemento> t, int p);
+    virtual ~Movimiento() = default;
 
     std::string getNombre() const;
-    Tipo getTipo() const;
+    std::shared_ptr<TipoElemento> getTipo() const;
     int getPotencia() const;
 
     virtual void aplicarEfecto(Pokemon& atacante, Pokemon& objetivo) const;
 };
 
-// Clases derivadas para movimientos con efectos especiales
+// Movimiento con efecto de estado
 class MovimientoEstado : public Movimiento {
 public:
-    MovimientoEstado(std::string n, Tipo t, int p);
+    MovimientoEstado(std::string n, std::shared_ptr<TipoElemento> t, int p);
     void aplicarEfecto(Pokemon& atacante, Pokemon& objetivo) const override;
 };
 
+// Movimiento de curación
 class MovimientoCuracion : public Movimiento {
 private:
     int cantidadCuracion;
 public:
-    MovimientoCuracion(std::string n, Tipo t, int p, int curacion);
+    MovimientoCuracion(std::string n, std::shared_ptr<TipoElemento> t, int p, int curacion);
     void aplicarEfecto(Pokemon& atacante, Pokemon& objetivo) const override;
 };
-
-
-
-// Función global para calcular la efectividad del tipo
-double calcularEfectividad(Tipo atacante, Tipo defensor);
-
-// Función global para obtener el nombre del tipo
-std::string getNombreTipo(Tipo t);
 
 #endif // MOVIMIENTO_H
