@@ -61,11 +61,42 @@ public class SeleccionInicialPanel extends JPanel {
         card.setBorder(BorderFactory.createLineBorder(new Color(255, 215, 0), 3));
         card.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
-        // Imagen placeholder
+        /* Imagen placeholder
         JLabel imgLabel = new JLabel("IMG", SwingConstants.CENTER);
         imgLabel.setFont(new Font("Arial", Font.BOLD, 36));
         imgLabel.setForeground(Color.GRAY);
         imgLabel.setPreferredSize(new Dimension(0, 180));
+        imgLabel.setOpaque(true);
+        imgLabel.setBackground(new Color(80, 90, 110));
+        */
+
+        String nombreImg = pokemon.getNombre().toLowerCase() + ".png"; 
+        System.out.println("Cargando imagen de: " + nombreImg);
+        String ruta = "/pokemon/resources/image/" + nombreImg;
+
+        ImageIcon icono = null;
+
+        try {
+            icono = new ImageIcon(getClass().getResource(ruta));
+            // Escalar imagen a tamaño fijo
+            Image imagen = icono.getImage().getScaledInstance(150, 120, Image.SCALE_SMOOTH);
+            icono = new ImageIcon(imagen);
+        } catch (Exception e) {
+            System.out.println("No se encontró la imagen: " + ruta);
+        }
+
+        // Si no encontró imagen, usar texto placeholder
+        JLabel imgLabel = new JLabel();
+        imgLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        if (icono != null) {
+            imgLabel.setIcon(icono);
+        } else {
+            imgLabel.setText("IMG");
+            imgLabel.setForeground(Color.GRAY);
+        }
+
+        imgLabel.setPreferredSize(new Dimension(0, 100));
         imgLabel.setOpaque(true);
         imgLabel.setBackground(new Color(80, 90, 110));
         

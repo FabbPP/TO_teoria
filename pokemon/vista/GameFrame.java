@@ -6,9 +6,8 @@ import pokemon.controlador.GameController;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * VISTA PRINCIPAL - Ventana del juego que contiene todos los paneles
- */
+//VISTA PRINCIPAL - Ventana del juego que contiene todos los paneles
+
 public class GameFrame extends JFrame implements GameStateObserver {
     private GameController controlador;
     private GameState modelo;
@@ -16,7 +15,9 @@ public class GameFrame extends JFrame implements GameStateObserver {
     // Paneles de diferentes estados
     private MenuPanel menuPanel;
     private SeleccionPokemonPanel seleccionPanel;
-    
+    private SeleccionInicialPanel seleccionInicialPanel;
+    private CombatePanel combatePanel;
+    private ResultadoPanel resultadoPanel;
     
     private CardLayout cardLayout;
     private JPanel containerPanel;
@@ -52,10 +53,15 @@ public class GameFrame extends JFrame implements GameStateObserver {
     private void inicializarPaneles() {
         menuPanel = new MenuPanel(controlador);
         seleccionPanel = new SeleccionPokemonPanel(controlador);
-        
+        seleccionInicialPanel = new SeleccionInicialPanel(controlador);
+        combatePanel = new CombatePanel(controlador);
+        resultadoPanel = new ResultadoPanel(controlador);
         
         containerPanel.add(menuPanel, "MENU");
         containerPanel.add(seleccionPanel, "SELECCION");
+        containerPanel.add(seleccionInicialPanel, "INICIAL");
+        containerPanel.add(combatePanel, "COMBATE");
+        containerPanel.add(resultadoPanel, "RESULTADO");
     }
     
     @Override
@@ -73,14 +79,17 @@ public class GameFrame extends JFrame implements GameStateObserver {
                 cardLayout.show(containerPanel, "SELECCION");
                 break;
             case SELECCION_INICIAL:
-               
+                seleccionInicialPanel.actualizar();
+                cardLayout.show(containerPanel, "INICIAL");
                 break;
             case COMBATE:
-                
+                combatePanel.actualizar();
+                cardLayout.show(containerPanel, "COMBATE");
                 break;
             case VICTORIA:
             case DERROTA:
-                
+                resultadoPanel.actualizar();
+                cardLayout.show(containerPanel, "RESULTADO");
                 break;
         }
         

@@ -72,53 +72,61 @@ public class GameState {
     
     private void inicializarPokemonDisponibles() {
         pokemonDisponibles = new ArrayList<>();
-        
-        // Crear 9 Pokemon disponibles para elegir
         // Pikachu
         Pokemon pikachu = new Pokemon("Pikachu", Arrays.asList(tipos.get("Electrico")), 80, 25, 5);
+        pikachu.setSpritePath("/pokemon/resources/image/pikachu.png");
         agregarMovimientosPikachu(pikachu);
         pokemonDisponibles.add(pikachu);
-        
+
         // Charmander
         Pokemon charmander = new Pokemon("Charmander", Arrays.asList(tipos.get("Fuego")), 95, 22, 6);
+        charmander.setSpritePath("/pokemon/resources/image/charmander.png");
         agregarMovimientosCharmander(charmander);
         pokemonDisponibles.add(charmander);
-        
+
         // Squirtle
         Pokemon squirtle = new Pokemon("Squirtle", Arrays.asList(tipos.get("Agua")), 90, 20, 7);
+        squirtle.setSpritePath(null); // cuando tengas squirtle.png
         agregarMovimientosSquirtle(squirtle);
         pokemonDisponibles.add(squirtle);
-        
+
         // Bulbasaur
         Pokemon bulbasaur = new Pokemon("Bulbasaur", Arrays.asList(tipos.get("Planta"), tipos.get("Veneno")), 100, 18, 8);
+        bulbasaur.setSpritePath(null); // cuando tengas bulbasaur.png
         agregarMovimientosBulbasaur(bulbasaur);
         pokemonDisponibles.add(bulbasaur);
-        
+
         // Eevee
         Pokemon eevee = new Pokemon("Eevee", Arrays.asList(tipos.get("Normal")), 85, 23, 6);
+        eevee.setSpritePath(null); // cuando tengas eevee.png
         agregarMovimientosEevee(eevee);
         pokemonDisponibles.add(eevee);
-        
+
         // Psyduck
         Pokemon psyduck = new Pokemon("Psyduck", Arrays.asList(tipos.get("Agua")), 88, 21, 5);
+        psyduck.setSpritePath(null); // cuando tengas psyduck.png
         agregarMovimientosPsyduck(psyduck);
         pokemonDisponibles.add(psyduck);
-        
+
         // Growlithe
         Pokemon growlithe = new Pokemon("Growlithe", Arrays.asList(tipos.get("Fuego")), 92, 24, 6);
+        growlithe.setSpritePath(null); // cuando tengas growlithe.png
         agregarMovimientosGrowlithe(growlithe);
         pokemonDisponibles.add(growlithe);
-        
+
         // Oddish
         Pokemon oddish = new Pokemon("Oddish", Arrays.asList(tipos.get("Planta"), tipos.get("Veneno")), 87, 19, 7);
+        oddish.setSpritePath(null); // cuando tengas oddish.png
         agregarMovimientosOddish(oddish);
         pokemonDisponibles.add(oddish);
-        
+
         // Jigglypuff
         Pokemon jigglypuff = new Pokemon("Jigglypuff", Arrays.asList(tipos.get("Normal")), 110, 17, 4);
+        jigglypuff.setSpritePath(null); // cuando tengas jigglypuff.png
         agregarMovimientosJigglypuff(jigglypuff);
         pokemonDisponibles.add(jigglypuff);
     }
+
     
     // Métodos para agregar movimientos (simplificados - null para IMostrador)
     private void agregarMovimientosPikachu(Pokemon p) {
@@ -208,6 +216,8 @@ public class GameState {
         for (Movimiento mov : original.getMovimientos()) {
             clon.agregarMovimiento(mov);
         }
+        clon.setSpritePath(original.getSpritePath());
+
         return clon;
     }
     

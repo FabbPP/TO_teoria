@@ -15,6 +15,7 @@ public class Pokemon {
     private int vidaMax;
     private int ataque;
     private int defensa;
+    private String spritePath; //para su imagen
     
     public Pokemon(String nombre, List<TipoElemento> tipos, int vida, int ataque, int defensa) {
         this.nombre = nombre;
@@ -24,6 +25,7 @@ public class Pokemon {
         this.vidaMax = vida;
         this.ataque = ataque;
         this.defensa = defensa;
+        
     }
     
     public void agregarMovimiento(Movimiento movimiento) {
@@ -54,7 +56,13 @@ public class Pokemon {
     public int getDefensa() {
         return defensa;
     }
-    
+    public String getSpritePath() {
+        return spritePath;
+    }
+    public void setSpritePath(String spritePath) {
+        this.spritePath = spritePath;
+    }
+
     public boolean estaVivo() {
         return vida > 0;
     }

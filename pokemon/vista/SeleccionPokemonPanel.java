@@ -217,7 +217,7 @@ public class SeleccionPokemonPanel extends JPanel {
                 Image imagen = icono.getImage().getScaledInstance(150, 120, Image.SCALE_SMOOTH);
                 icono = new ImageIcon(imagen);
             } catch (Exception e) {
-                System.out.println("⚠ No se encontró la imagen: " + ruta);
+                System.out.println("No se encontró la imagen: " + ruta);
             }
 
             // Si no encontró imagen, usar texto placeholder
