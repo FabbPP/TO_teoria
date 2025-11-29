@@ -1,3 +1,4 @@
+pokemon/**/*.class
 # Ignore C++ build artifacts
 *.exe
 *.o
