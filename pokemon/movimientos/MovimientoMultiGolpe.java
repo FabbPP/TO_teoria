@@ -7,10 +7,9 @@ import pokemon.interfaces.ICalculadorDano;
 import pokemon.interfaces.ICalculadorMultiplicador;
 import static pokemon.Global.*;
 
-/**
- * OCP: Extensión de Movimiento sin modificar la clase base
- * LSP: Puede sustituir a Movimiento sin problemas
- */
+//OCP: Extensión de Movimiento sin modificar la clase base
+//LSP: Puede sustituir a Movimiento sin problemas
+ 
 public class MovimientoMultiGolpe extends Movimiento {
     private int numeroGolpes;
     
@@ -22,9 +21,8 @@ public class MovimientoMultiGolpe extends Movimiento {
         this.numeroGolpes = golpes;
     }
     
-    /**
-     * LSP: Override correcto manteniendo el contrato
-     */
+    //LSP: Override correcto manteniendo el contrato
+    
     @Override
     public void aplicarEfecto(Pokemon atacante, Pokemon objetivo) {
         if (mostrador != null) {

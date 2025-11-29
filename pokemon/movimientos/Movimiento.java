@@ -43,9 +43,8 @@ public class Movimiento {
         return potencia;
     }
     
-    /**
-     * SRP: Método con responsabilidad única - calcular multiplicador
-     */
+    // SRP: Método con responsabilidad única - calcular multiplicador
+     
     protected double obtenerMultiplicadorTipo(Pokemon objetivo) {
         double fuerzaAtaque = tipo.getFuerza();
         
@@ -59,9 +58,7 @@ public class Movimiento {
         return calculadorMultiplicador.calcularMultiplicador(fuerzaAtaque, fuerzaDefensaPromedio);
     }
     
-    /**
-     * SRP: Método con responsabilidad única - mostrar mensajes
-     */
+    //SRP: Método con responsabilidad única - mostrar mensajes
     protected void mostrarMensajeEfectividad(double multiplicador) {
         if (mostrador == null) return;
         
@@ -76,9 +73,8 @@ public class Movimiento {
         }
     }
     
-    /**
-     * OCP: Método virtual para extensión
-     */
+    //OCP: Método virtual para extensión
+    
     public void aplicarEfecto(Pokemon atacante, Pokemon objetivo) {
         if (potencia > 0) {
             // SRP: Cada cálculo delegado a su clase responsable

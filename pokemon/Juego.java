@@ -1,5 +1,5 @@
 package pokemon;
-
+/*
 import pokemon.ui.UI;
 import pokemon.movimientos.*;
 import pokemon.tipos.*;
@@ -10,9 +10,8 @@ import java.util.Random;
 import static pokemon.Global.*;
 
 
-/**
- * Clase principal que maneja la lógica del juego de combate Pokemon
- */
+//Clase principal que maneja la lógica del juego de combate Pokemon
+
 public class Juego {
     private Entrenador jugador;
     private Entrenador rival;
@@ -259,3 +258,5 @@ public class Juego {
         }
     }
 }
+
+ */

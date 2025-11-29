@@ -5,9 +5,8 @@ import pokemon.tipos.TipoElemento;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Clase que representa un Pokemon en el sistema de combate
- */
+//Clase que representa un Pokemon en el sistema de combate
+
 public class Pokemon {
     private String nombre;
     private List<TipoElemento> tipos;

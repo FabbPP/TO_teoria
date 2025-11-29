@@ -2,9 +2,8 @@ package pokemon;
 
 import static pokemon.Global.*;
 
-/**
- * Clase que representa un item consumible en el juego
- */
+//Clase que representa un item consumible en el juego
+
 public class Item {
     private String nombre;
     private int efectoCuracion;

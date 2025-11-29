@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import static pokemon.Global.*;
 
-/**
- * Clase que representa un entrenador con su equipo y bolsa de items
- */
+//Clase que representa un entrenador con su equipo y bolsa de items
+
 public class Entrenador {
     private String nombre;
     private List<Pokemon> equipo;

@@ -1,15 +1,15 @@
 package pokemon.ui;
 
+/* 
 import pokemon.Pokemon;
 import pokemon.Entrenador;
 import pokemon.interfaces.IMostrador;
 import java.util.Scanner;
 import static pokemon.Global.*;
 
-/**
- * DIP: UI implementa la interfaz IMostrador
- * Clase responsable de la interacción con el usuario
- */
+//DIP: UI implementa la interfaz IMostrador
+//Clase responsable de la interacción con el usuario
+
 public class UI implements IMostrador {
     private Scanner scanner;
     
@@ -17,9 +17,8 @@ public class UI implements IMostrador {
         this.scanner = new Scanner(System.in);
     }
     
-    /**
-     * Implementación de IMostrador (DIP)
-     */
+    //Implementación de IMostrador (DIP)
+    
     @Override
     public void mostrarMensaje(String mensaje, String color) {
         if (color.isEmpty()) {
@@ -34,9 +33,8 @@ public class UI implements IMostrador {
         System.out.println(mensaje);
     }
     
-    /**
-     * Métodos para mostrar información
-     */
+    //Métodos para mostrar información
+    
     public void mostrarEstado(Pokemon jugador, Pokemon rival) {
         System.out.println(BLUE + "\n--- Estado del Combate ---" + RESET);
         System.out.print("Tu ");
@@ -64,9 +62,8 @@ public class UI implements IMostrador {
         }
     }
     
-    /**
-     * Métodos para obtener entrada del usuario
-     */
+    //Métodos para obtener entrada del usuario
+    
     public int obtenerEleccion(String mensaje, int maxOpciones) {
         int eleccion;
         while (true) {
@@ -99,3 +96,5 @@ public class UI implements IMostrador {
         scanner.close();
     }
 }
+
+*/
