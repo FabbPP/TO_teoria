@@ -5,3 +5,4 @@ pokemon/**/*.class
 
 # Ignore VS Code configuration files
 .vscode/
+bin/
