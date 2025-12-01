@@ -70,19 +70,24 @@ public class SeleccionInicialPanel extends JPanel {
         imgLabel.setBackground(new Color(80, 90, 110));
         */
 
-        String nombreImg = pokemon.getNombre().toLowerCase() + ".png"; 
-        System.out.println("Cargando imagen de: " + nombreImg);
-        String ruta = "/pokemon/resources/image/" + nombreImg;
-
+        String ruta = pokemon.getSpriteFrontal();
         ImageIcon icono = null;
 
-        try {
-            icono = new ImageIcon(getClass().getResource(ruta));
-            // Escalar imagen a tamaño fijo
-            Image imagen = icono.getImage().getScaledInstance(150, 120, Image.SCALE_SMOOTH);
-            icono = new ImageIcon(imagen);
-        } catch (Exception e) {
-            System.out.println("No se encontró la imagen: " + ruta);
+        if (ruta != null) {
+            try {
+                java.net.URL url = getClass().getResource(ruta);
+                if (url != null) {
+                    icono = new ImageIcon(url);
+                    
+                    // Aquí hay más espacio, así que si tus GIFs no son gigantes, 
+                    // podrías intentar mostrarlos animados quitando el escalado.
+                    // Por seguridad, mantenemos el escalado:
+                    // Image imagen = icono.getImage().getScaledInstance(150, 120, Image.SCALE_SMOOTH);
+                    // icono = new ImageIcon(imagen);
+                }
+            } catch (Exception e) {
+                System.out.println("Error cargando imagen: " + ruta);
+            }
         }
 
         // Si no encontró imagen, usar texto placeholder

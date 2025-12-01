@@ -74,55 +74,64 @@ public class GameState {
         pokemonDisponibles = new ArrayList<>();
         // Pikachu
         Pokemon pikachu = new Pokemon("Pikachu", Arrays.asList(tipos.get("Electrico")), 80, 25, 5);
-        pikachu.setSpritePath("/pokemon/resources/image/pikachu.png");
+        pikachu.setSpriteFrontal("/pokemon/resources/gif/pikachu_front.gif");
+        pikachu.setSpriteTrasero("/pokemon/resources/gif/pikachu_back.gif");
         agregarMovimientosPikachu(pikachu);
         pokemonDisponibles.add(pikachu);
 
         // Charmander
         Pokemon charmander = new Pokemon("Charmander", Arrays.asList(tipos.get("Fuego")), 95, 22, 6);
-        charmander.setSpritePath("/pokemon/resources/image/charmander.png");
+        charmander.setSpriteFrontal("/pokemon/resources/gif/charmander_front.gif");
+        charmander.setSpriteTrasero("/pokemon/resources/gif/charmander_back.gif");
         agregarMovimientosCharmander(charmander);
         pokemonDisponibles.add(charmander);
 
         // Squirtle
         Pokemon squirtle = new Pokemon("Squirtle", Arrays.asList(tipos.get("Agua")), 90, 20, 7);
-        squirtle.setSpritePath(null); // cuando tengas squirtle.png
+        squirtle.setSpriteFrontal("/pokemon/resources/gif/squirtle_front.gif");
+        squirtle.setSpriteTrasero("/pokemon/resources/gif/squirtle_back.gif");
         agregarMovimientosSquirtle(squirtle);
         pokemonDisponibles.add(squirtle);
 
         // Bulbasaur
         Pokemon bulbasaur = new Pokemon("Bulbasaur", Arrays.asList(tipos.get("Planta"), tipos.get("Veneno")), 100, 18, 8);
-        bulbasaur.setSpritePath(null); // cuando tengas bulbasaur.png
+        bulbasaur.setSpriteFrontal("/pokemon/resources/gif/bulbasaur_front.gif");
+        bulbasaur.setSpriteTrasero("/pokemon/resources/gif/bulbasaur_back.gif");
         agregarMovimientosBulbasaur(bulbasaur);
         pokemonDisponibles.add(bulbasaur);
 
         // Eevee
         Pokemon eevee = new Pokemon("Eevee", Arrays.asList(tipos.get("Normal")), 85, 23, 6);
-        eevee.setSpritePath(null); // cuando tengas eevee.png
+        eevee.setSpriteFrontal("/pokemon/resources/gif/eevee_front.gif");
+        eevee.setSpriteTrasero("/pokemon/resources/gif/eevee_back.gif");
         agregarMovimientosEevee(eevee);
         pokemonDisponibles.add(eevee);
 
         // Psyduck
         Pokemon psyduck = new Pokemon("Psyduck", Arrays.asList(tipos.get("Agua")), 88, 21, 5);
-        psyduck.setSpritePath(null); // cuando tengas psyduck.png
+        psyduck.setSpriteFrontal("/pokemon/resources/gif/psyduck_front.gif");
+        psyduck.setSpriteTrasero("/pokemon/resources/gif/psyduck_back.gif");
         agregarMovimientosPsyduck(psyduck);
         pokemonDisponibles.add(psyduck);
 
         // Growlithe
         Pokemon growlithe = new Pokemon("Growlithe", Arrays.asList(tipos.get("Fuego")), 92, 24, 6);
-        growlithe.setSpritePath(null); // cuando tengas growlithe.png
+        growlithe.setSpriteFrontal("/pokemon/resources/gif/growlithe_front.gif");
+        growlithe.setSpriteTrasero("/pokemon/resources/gif/growlithe_back.gif");
         agregarMovimientosGrowlithe(growlithe);
         pokemonDisponibles.add(growlithe);
 
         // Oddish
         Pokemon oddish = new Pokemon("Oddish", Arrays.asList(tipos.get("Planta"), tipos.get("Veneno")), 87, 19, 7);
-        oddish.setSpritePath(null); // cuando tengas oddish.png
+        oddish.setSpriteFrontal("/pokemon/resources/gif/oddish_front.gif");
+        oddish.setSpriteTrasero("/pokemon/resources/gif/oddish_back.gif");
         agregarMovimientosOddish(oddish);
         pokemonDisponibles.add(oddish);
 
         // Jigglypuff
         Pokemon jigglypuff = new Pokemon("Jigglypuff", Arrays.asList(tipos.get("Normal")), 110, 17, 4);
-        jigglypuff.setSpritePath(null); // cuando tengas jigglypuff.png
+        jigglypuff.setSpriteFrontal("/pokemon/resources/gif/jigglypuff_front.gif");
+        jigglypuff.setSpriteTrasero("/pokemon/resources/gif/jigglypuff_back.gif");
         agregarMovimientosJigglypuff(jigglypuff);
         pokemonDisponibles.add(jigglypuff);
     }
@@ -213,10 +222,13 @@ public class GameState {
     private Pokemon clonarPokemon(Pokemon original) {
         Pokemon clon = new Pokemon(original.getNombre(), original.getTipos(), 
                                    original.getVidaMax(), original.getAtaque(), original.getDefensa());
+        
         for (Movimiento mov : original.getMovimientos()) {
             clon.agregarMovimiento(mov);
         }
-        clon.setSpritePath(original.getSpritePath());
+
+        clon.setSpriteFrontal(original.getSpriteFrontal());
+        clon.setSpriteTrasero(original.getSpriteTrasero());
 
         return clon;
     }

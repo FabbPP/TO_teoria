@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
+
 /**
  * Panel principal de combate
  */
@@ -24,12 +25,16 @@ public class CombatePanel extends JPanel {
     private JLabel rivalNombreLabel;
     private JProgressBar rivalVidaBar;
     private JLabel rivalVidaLabel;
-    private JLabel rivalSpriteLabel;
+    
+    // CAMBIO: Usamos nuestro PanelGif personalizado en lugar de JLabel
+    private PanelGif rivalSpritePanel;
     
     private JLabel jugadorNombreLabel;
     private JProgressBar jugadorVidaBar;
     private JLabel jugadorVidaLabel;
-    private JLabel jugadorSpriteLabel;
+    
+    // CAMBIO: Usamos nuestro PanelGif personalizado en lugar de JLabel
+    private PanelGif jugadorSpritePanel;
     
     private JTextArea logTextArea;
     private JLabel turnoLabel;
@@ -84,13 +89,9 @@ public class CombatePanel extends JPanel {
             Color.WHITE
         ));
         
-        // Sprite del rival
-        rivalSpriteLabel = new JLabel("RIVAL", SwingConstants.CENTER);
-        rivalSpriteLabel.setFont(new Font("Arial", Font.BOLD, 48));
-        rivalSpriteLabel.setForeground(Color.GRAY);
-        rivalSpriteLabel.setPreferredSize(new Dimension(200, 0));
-        rivalSpriteLabel.setOpaque(true);
-        rivalSpriteLabel.setBackground(new Color(80, 90, 110));
+        // CAMBIO: Inicializamos el PanelGif para el rival
+        rivalSpritePanel = new PanelGif("RIVAL");
+        rivalSpritePanel.setPreferredSize(new Dimension(220, 0)); // Espacio suficiente para la imagen
         
         // Info del rival
         JPanel infoPanel = new JPanel();
@@ -118,7 +119,8 @@ public class CombatePanel extends JPanel {
         infoPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         infoPanel.add(rivalVidaLabel);
         
-        panel.add(rivalSpriteLabel, BorderLayout.WEST);
+        // Agregamos el panel personalizado
+        panel.add(rivalSpritePanel, BorderLayout.WEST);
         panel.add(infoPanel, BorderLayout.CENTER);
         
         return panel;
@@ -136,13 +138,9 @@ public class CombatePanel extends JPanel {
             Color.WHITE
         ));
         
-        // Sprite del jugador
-        jugadorSpriteLabel = new JLabel("JUGADOR", SwingConstants.CENTER);
-        jugadorSpriteLabel.setFont(new Font("Arial", Font.BOLD, 36));
-        jugadorSpriteLabel.setForeground(Color.GRAY);
-        jugadorSpriteLabel.setPreferredSize(new Dimension(180, 0));
-        jugadorSpriteLabel.setOpaque(true);
-        jugadorSpriteLabel.setBackground(new Color(80, 90, 110));
+        // CAMBIO: Inicializamos el PanelGif para el jugador
+        jugadorSpritePanel = new PanelGif("JUGADOR");
+        jugadorSpritePanel.setPreferredSize(new Dimension(220, 0)); // Espacio suficiente
         
         // Info del jugador
         JPanel infoPanel = new JPanel();
@@ -170,7 +168,8 @@ public class CombatePanel extends JPanel {
         infoPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         infoPanel.add(jugadorVidaLabel);
         
-        panel.add(jugadorSpriteLabel, BorderLayout.WEST);
+        // Agregamos el panel personalizado
+        panel.add(jugadorSpritePanel, BorderLayout.WEST);
         panel.add(infoPanel, BorderLayout.CENTER);
         
         return panel;
@@ -477,66 +476,23 @@ public class CombatePanel extends JPanel {
             actualizarColorBarra(rivalVidaBar, rival.getVida(), rival.getVidaMax());
         }
         
-        // ==== SPRITE JUGADOR ====
-        if (jugador != null && jugador.getSpritePath() != null) {
-
-            URL url = getClass().getResource(jugador.getSpritePath());
-
-            if (url != null) {
-                ImageIcon icon = new ImageIcon(url);
-                Image img = icon.getImage().getScaledInstance(180, 180, Image.SCALE_SMOOTH);
-                jugadorSpriteLabel.setIcon(new ImageIcon(img));
-                jugadorSpriteLabel.setText("");
-            } else {
-                // Placeholder estilizado para jugador
-                jugadorSpriteLabel.setIcon(null);
-                jugadorSpriteLabel.setText("JUGADOR");
-                jugadorSpriteLabel.setHorizontalAlignment(SwingConstants.CENTER);
-                jugadorSpriteLabel.setForeground(Color.WHITE);
-                jugadorSpriteLabel.setOpaque(true);
-                jugadorSpriteLabel.setBackground(new Color(80, 90, 110));
-            }
-
+        // ==== SPRITE JUGADOR (VISTA TRASERA) ====
+        if (jugador != null && jugador.getSpriteTrasero() != null) {
+            URL url = getClass().getResource(jugador.getSpriteTrasero());
+            // CAMBIO: Usamos nuestro método setGif
+            jugadorSpritePanel.setGif(url);
         } else {
-            jugadorSpriteLabel.setIcon(null);
-            jugadorSpriteLabel.setText("JUGADOR");
-            jugadorSpriteLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            jugadorSpriteLabel.setForeground(Color.WHITE);
-            jugadorSpriteLabel.setOpaque(true);
-            jugadorSpriteLabel.setBackground(new Color(80, 90, 110));
+            jugadorSpritePanel.setGif(null);
         }
 
-
-
-        // ==== SPRITE RIVAL ====
-        if (rival != null && rival.getSpritePath() != null) {
-
-            URL url = getClass().getResource(rival.getSpritePath());
-
-            if (url != null) {
-                ImageIcon icon = new ImageIcon(url);
-                Image img = icon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
-                rivalSpriteLabel.setIcon(new ImageIcon(img));
-                rivalSpriteLabel.setText("");
-            } else {
-                // Placeholder estilizado para rival
-                rivalSpriteLabel.setIcon(null);
-                rivalSpriteLabel.setText("RIVAL");
-                rivalSpriteLabel.setHorizontalAlignment(SwingConstants.CENTER);
-                rivalSpriteLabel.setForeground(Color.WHITE);
-                rivalSpriteLabel.setOpaque(true);
-                rivalSpriteLabel.setBackground(new Color(80, 90, 110));
-            }
-
+        // ==== SPRITE RIVAL (VISTA FRONTAL) ====
+        if (rival != null && rival.getSpriteFrontal() != null) {
+            URL url = getClass().getResource(rival.getSpriteFrontal());
+            // CAMBIO: Usamos nuestro método setGif
+            rivalSpritePanel.setGif(url);
         } else {
-            rivalSpriteLabel.setIcon(null);
-            rivalSpriteLabel.setText("RIVAL");
-            rivalSpriteLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            rivalSpriteLabel.setForeground(Color.WHITE);
-            rivalSpriteLabel.setOpaque(true);
-            rivalSpriteLabel.setBackground(new Color(80, 90, 110));
+            rivalSpritePanel.setGif(null);
         }
-
 
         
         // Actualizar log
@@ -564,6 +520,75 @@ public class CombatePanel extends JPanel {
             barra.setForeground(new Color(255, 200, 0));
         } else {
             barra.setForeground(new Color(220, 50, 50));
+        }
+    }
+    
+    // === CLASE INTERNA PARA DIBUJAR GIFS ESCALADOS ===
+    // Esta clase permite escalar GIFs sin perder la animación
+    private class PanelGif extends JPanel {
+        private Image imagenGif;
+        private String textoPlaceholder;
+        
+        public PanelGif(String placeholder) {
+            this.textoPlaceholder = placeholder;
+            setBackground(new Color(80, 90, 110)); // Color de fondo del placeholder
+        }
+        
+        public void setGif(URL url) {
+            if (url != null) {
+                this.imagenGif = new ImageIcon(url).getImage();
+                setOpaque(false); // Hacer transparente para ver el fondo del juego
+            } else {
+                this.imagenGif = null;
+                setOpaque(true); // Hacer opaco para ver el color gris de placeholder
+            }
+            repaint();
+        }
+        
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            
+            if (imagenGif != null) {
+                int wPanel = getWidth();
+                int hPanel = getHeight();
+                int wImg = imagenGif.getWidth(this);
+                int hImg = imagenGif.getHeight(this);
+                
+                if (wImg > 0 && hImg > 0) {
+                    // Calcular escala manteniendo proporción
+                    double escala = Math.min((double)wPanel / wImg, (double)hPanel / hImg);
+                    int anchoFinal = (int) (wImg * escala);
+                    int altoFinal = (int) (hImg * escala);
+                    int x = (wPanel - anchoFinal) / 2;
+                    int y = (hPanel - altoFinal) / 2;
+                    
+                    // === CAMBIO IMPORTANTE AQUÍ ===
+                    // Usamos Graphics2D para mejorar el renderizado
+                    Graphics2D g2d = (Graphics2D) g.create();
+                    
+                    // 1. NEAREST_NEIGHBOR: Hace que los pixeles se vean nítidos (retro), no borrosos.
+                    // Esto suele arreglar también el parpadeo del fondo al escalar.
+                    g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, 
+                                    RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+                    
+                    // 2. Renderizado
+                    g2d.drawImage(imagenGif, x, y, anchoFinal, altoFinal, this);
+                    
+                    g2d.dispose(); // Liberar recursos del g2d
+                    // ==============================
+                } else {
+                    g.drawImage(imagenGif, 0, 0, wPanel, hPanel, this);
+                }
+            } else {
+                // ... (código del placeholder igual que antes)
+                g.setColor(Color.WHITE);
+                g.setFont(new Font("Arial", Font.BOLD, 24));
+                FontMetrics fm = g.getFontMetrics();
+                int x = (getWidth() - fm.stringWidth(textoPlaceholder)) / 2;
+                int y = (getHeight() - fm.getHeight()) / 2 + fm.getAscent();
+                g.drawString(textoPlaceholder, x, y);
+            }
         }
     }
 }

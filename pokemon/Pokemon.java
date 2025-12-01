@@ -15,7 +15,8 @@ public class Pokemon {
     private int vidaMax;
     private int ataque;
     private int defensa;
-    private String spritePath; //para su imagen
+    private String spriteFrontal;
+    private String spriteTrasero;
     
     public Pokemon(String nombre, List<TipoElemento> tipos, int vida, int ataque, int defensa) {
         this.nombre = nombre;
@@ -56,11 +57,25 @@ public class Pokemon {
     public int getDefensa() {
         return defensa;
     }
-    public String getSpritePath() {
-        return spritePath;
+    public String getSpriteFrontal() {
+        return spriteFrontal;
     }
-    public void setSpritePath(String spritePath) {
-        this.spritePath = spritePath;
+
+    public void setSpriteFrontal(String spriteFrontal) {
+        this.spriteFrontal = spriteFrontal;
+    }
+
+    public String getSpriteTrasero() {
+        return spriteTrasero;
+    }
+
+    public void setSpriteTrasero(String spriteTrasero) {
+        this.spriteTrasero = spriteTrasero;
+    }
+    
+    // Método de compatibilidad (opcional, para que no fallen otras clases que usen getSpritePath)
+    public String getSpritePath() {
+        return spriteFrontal; 
     }
 
     public boolean estaVivo() {

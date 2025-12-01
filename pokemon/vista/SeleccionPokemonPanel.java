@@ -205,19 +205,24 @@ public class SeleccionPokemonPanel extends JPanel {
             imgLabel.setBackground(new Color(80, 90, 110));
             */
 
-            String nombreImg = pokemon.getNombre().toLowerCase() + ".png"; 
-            System.out.println("Cargando imagen de: " + nombreImg);
-            String ruta = "/pokemon/resources/image/" + nombreImg;
-
+            String ruta = pokemon.getSpriteFrontal(); // Usamos el sprite frontal
             ImageIcon icono = null;
 
-            try {
-                icono = new ImageIcon(getClass().getResource(ruta));
-                // Escalar imagen a tamaño fijo
-                Image imagen = icono.getImage().getScaledInstance(150, 120, Image.SCALE_SMOOTH);
-                icono = new ImageIcon(imagen);
-            } catch (Exception e) {
-                System.out.println("No se encontró la imagen: " + ruta);
+            if (ruta != null) {
+                try {
+                    java.net.URL url = getClass().getResource(ruta);
+                    if (url != null) {
+                        icono = new ImageIcon(url);
+                        
+                        // NOTA: Para el menú de selección (Grid), es MEJOR escalar la imagen
+                        // para que no rompa el diseño, aunque el GIF se vea estático.
+                        // Si tus GIFs son pequeños (ej. 96x96), puedes quitar estas 2 líneas de abajo para verlos animados.
+                        // Image imagen = icono.getImage().getScaledInstance(150, 120, Image.SCALE_SMOOTH);
+                        // icono = new ImageIcon(imagen);
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error cargando imagen: " + ruta);
+                }
             }
 
             // Si no encontró imagen, usar texto placeholder
