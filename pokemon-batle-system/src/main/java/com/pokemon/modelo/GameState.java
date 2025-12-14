@@ -5,12 +5,15 @@ import com.pokemon.tipos.*;
 import com.pokemon.movimientos.*;
 import com.pokemon.calculadores.*;
 import com.pokemon.interfaces.*;
+import com.pokemon.singleton.ControlJuego;  // el singleton
 import java.util.*;
 
 //MODELO - Gestiona el estado completo del juego
+// INTEGRADO CON SINGLETON ControlJuego para estado global
 
 public class GameState {
     
+    private ControlJuego controlJuego;  // Referencia al singleton
     
     // Estados del juego
     public enum EstadoJuego {
@@ -51,6 +54,10 @@ public class GameState {
         this.observadores = new ArrayList<>();
         this.turnoActual = 1;
         
+        //obtener la instancia del singleton
+        this.controlJuego = ControlJuego.getInstance();
+        
+        System.out.println("GameState obtuvo instancia de ControlJuego: " + controlJuego);
         
         inicializarCalculadores();
         inicializarTipos();
@@ -204,6 +211,8 @@ public class GameState {
             Pokemon copia = clonarPokemon(pokemon);
             pokemonSeleccionados.add(copia);
             
+            // SINGLETON: Registrar captura
+            controlJuego.registrarCaptura();
             
             notificarObservadores();
         }
@@ -277,6 +286,14 @@ public class GameState {
         agregarLog(pokemonActivoJugador.getNombre() + " usa " + movimiento.getNombre() + 
                    " y causa " + danoRealizado + " de daño!");
         
+        // SINGLETON: Registrar dano infligido
+        controlJuego.registrarDanoInfligido(danoRealizado);
+        
+        // Verificar si fue crítico (10% de probabilidad)
+        if (new Random().nextInt(100) < 10) {
+            controlJuego.registrarAtaqueCritico();
+            agregarLog("¡Ataque crítico!");
+        }
         
         verificarEstadoCombate();
         
@@ -312,6 +329,8 @@ public class GameState {
         agregarLog(pokemonActivoRival.getNombre() + " usa " + movimientoElegido.getNombre() + 
                    " y causa " + danoRealizado + " de daño!");
         
+        //SINGLETON: Registrar daño recibido
+        controlJuego.registrarDanoRecibido(danoRealizado);
         
         verificarEstadoCombate();
     }
@@ -321,6 +340,8 @@ public class GameState {
             item.usar(pokemonActivoJugador);
             agregarLog("Usaste " + item.getNombre() + " en " + pokemonActivoJugador.getNombre());
             
+            // SINGLETON: Registrar uso de item
+            controlJuego.registrarUsoItem();
             
             turnoRival();
             turnoActual++;
@@ -356,6 +377,8 @@ public class GameState {
                     }
                 }
             } else {
+                // SINGLETON: Registrar victoria
+                controlJuego.registrarVictoria();
                 cambiarEstado(EstadoJuego.VICTORIA);
                 return;
             }
@@ -366,8 +389,11 @@ public class GameState {
             agregarLog(pokemonActivoJugador.getNombre() + " ha sido derrotado!");
             
             if (!jugador.tienePokemonVivo()) {
+                // SINGLETON: Registrar derrota
+                controlJuego.registrarDerrota();
                 cambiarEstado(EstadoJuego.DERROTA);
 
+                getControlJuego().mostrarEstadoCompleto();
             }
         }
     }
@@ -389,11 +415,18 @@ public class GameState {
         pokemonActivoRival = null;
         inicializarPokemonDisponibles();
         
+        // SINGLETON: Reiniciar también el control del juego
+        controlJuego.reiniciarJuego();
         
         cambiarEstado(EstadoJuego.MENU_PRINCIPAL);
     }
     
-
+    //metodo para acceder al singleton
+    
+    public ControlJuego getControlJuego() {
+        return controlJuego;
+    }
+    
     // GETTERS existentes
     public EstadoJuego getEstadoActual() { return estadoActual; }
     public List<Pokemon> getPokemonDisponibles() { return new ArrayList<>(pokemonDisponibles); }
