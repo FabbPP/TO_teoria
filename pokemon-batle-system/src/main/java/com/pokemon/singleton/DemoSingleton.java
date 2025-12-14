@@ -89,12 +89,12 @@ public class DemoSingleton {
         
         pausa();
         
-        System.out.println("\n🖼️  MÓDULO INTERFAZ: Consultando estado...\n");
+        System.out.println("\nMÓDULO INTERFAZ: Consultando estado...\n");
         System.out.println("Estado actual del juego:");
         control3.mostrarEstadoCompleto();
         
         pausa();
-        System.out.println("\n⚔️ MÓDULO COMBATE: Segunda batalla...\n");
+        System.out.println("\nMÓDULO COMBATE: Segunda batalla...\n");
         
         System.out.println("--- Turno 1 ---");
         control2.registrarDanoInfligido(50);
