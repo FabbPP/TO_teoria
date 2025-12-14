@@ -159,24 +159,14 @@ public class SeleccionPokemonPanel extends JPanel {
         boton.setFont(new Font("Arial", Font.BOLD, 18));
         boton.setPreferredSize(new Dimension(250, 50));
         boton.setFocusPainted(false);
-        boton.setBackground(new Color(220, 50, 50));
-        boton.setForeground(Color.WHITE);
-        boton.setBorder(BorderFactory.createLineBorder(new Color(255, 215, 0), 2));
-        boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
-        boton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                if (boton.isEnabled()) {
-                    boton.setBackground(new Color(255, 70, 70));
-                }
-            }
-            
-            @Override
-            public void mouseExited(MouseEvent e) {
-                boton.setBackground(new Color(220, 50, 50));
-            }
-        });
+        ComponentStyles.styleButton(boton,
+            new Color(220, 50, 50), // normal
+            new Color(255, 70, 70), // hover
+            Color.BLACK,            // foreground (negro)
+            new Color(255, 215, 0), // border
+            new Color(200, 200, 200), // disabled bg
+            Color.DARK_GRAY         // disabled fg
+        );
         
         return boton;
     }
