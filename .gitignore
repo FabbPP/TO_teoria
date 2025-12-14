@@ -1,8 +1,4 @@
-pokemon/**/*.class
-# Ignore C++ build artifacts
-*.exe
-*.o
+# Maven build
+target/
+*.class
 
-# Ignore VS Code configuration files
-.vscode/
-bin/
