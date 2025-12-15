@@ -1,4 +1,4 @@
-package pokemon.vista;
+package com.pokemon.vista;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
