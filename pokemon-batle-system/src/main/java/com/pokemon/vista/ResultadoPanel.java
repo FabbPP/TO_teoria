@@ -85,22 +85,14 @@ public class ResultadoPanel extends JPanel {
         boton.setMaximumSize(new Dimension(350, 60));
         boton.setAlignmentX(Component.CENTER_ALIGNMENT);
         boton.setFocusPainted(false);
-        boton.setBackground(new Color(220, 50, 50));
-        boton.setForeground(Color.WHITE);
-        boton.setBorder(BorderFactory.createLineBorder(new Color(255, 215, 0), 3));
-        boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
-        boton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                boton.setBackground(new Color(255, 70, 70));
-            }
-            
-            @Override
-            public void mouseExited(MouseEvent e) {
-                boton.setBackground(new Color(220, 50, 50));
-            }
-        });
+        ComponentStyles.styleButton(boton,
+            new Color(220, 50, 50), // normal
+            new Color(255, 70, 70), // hover
+            Color.BLACK,            // fg (negro)
+            new Color(255, 215, 0), // border
+            new Color(200, 200, 200), // disabled bg
+            Color.DARK_GRAY         // disabled fg
+        );
         
         return boton;
     }

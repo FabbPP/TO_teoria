@@ -347,22 +347,14 @@ public class CombatePanel extends JPanel {
         JButton boton = new JButton(texto);
         boton.setFont(new Font("Arial", Font.BOLD, 16));
         boton.setFocusPainted(false);
-        boton.setBackground(new Color(60, 70, 90));
-        boton.setForeground(Color.WHITE);
-        boton.setBorder(BorderFactory.createLineBorder(new Color(255, 215, 0), 2));
-        boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
-        boton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                boton.setBackground(new Color(80, 90, 110));
-            }
-            
-            @Override
-            public void mouseExited(MouseEvent e) {
-                boton.setBackground(new Color(60, 70, 90));
-            }
-        });
+        ComponentStyles.styleButton(boton,
+            new Color(60, 70, 90), // normal
+            new Color(80, 90, 110), // hover
+            Color.BLACK, // texto en negro
+            new Color(255, 215, 0),
+            new Color(200, 200, 200), // disabled bg
+            Color.DARK_GRAY
+        );
         
         return boton;
     }
@@ -373,22 +365,14 @@ public class CombatePanel extends JPanel {
         JButton boton = new JButton(texto);
         boton.setFont(new Font("Arial", Font.BOLD, 14));
         boton.setFocusPainted(false);
-        boton.setBackground(new Color(220, 50, 50));
-        boton.setForeground(Color.WHITE);
-        boton.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 2));
-        boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
-        boton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                boton.setBackground(new Color(255, 70, 70));
-            }
-            
-            @Override
-            public void mouseExited(MouseEvent e) {
-                boton.setBackground(new Color(220, 50, 50));
-            }
-        });
+        ComponentStyles.styleButton(boton,
+            new Color(220, 50, 50), // normal
+            new Color(255, 70, 70), // hover
+            Color.BLACK, // texto en negro
+            Color.YELLOW,
+            new Color(200, 200, 200),
+            Color.DARK_GRAY
+        );
         
         return boton;
     }
@@ -399,25 +383,15 @@ public class CombatePanel extends JPanel {
         JButton boton = new JButton(texto);
         boton.setFont(new Font("Arial", Font.BOLD, 14));
         boton.setFocusPainted(false);
-        boton.setBackground(new Color(50, 120, 200));
-        boton.setForeground(Color.WHITE);
-        boton.setBorder(BorderFactory.createLineBorder(Color.CYAN, 2));
-        boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        ComponentStyles.styleButton(boton,
+            new Color(50, 120, 200), // normal
+            new Color(70, 140, 220), // hover
+            Color.BLACK, // texto en negro
+            Color.CYAN,
+            new Color(200, 200, 200),
+            Color.DARK_GRAY
+        );
         boton.setEnabled(item.disponible());
-        
-        boton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                if (boton.isEnabled()) {
-                    boton.setBackground(new Color(70, 140, 220));
-                }
-            }
-            
-            @Override
-            public void mouseExited(MouseEvent e) {
-                boton.setBackground(new Color(50, 120, 200));
-            }
-        });
         
         return boton;
     }
@@ -431,27 +405,17 @@ public class CombatePanel extends JPanel {
         JButton boton = new JButton(texto);
         boton.setFont(new Font("Arial", Font.BOLD, 14));
         boton.setFocusPainted(false);
-        boton.setBackground(pokemon.estaVivo() ? new Color(50, 150, 50) : new Color(100, 100, 100));
-        boton.setForeground(Color.WHITE);
-        boton.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
-        boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        Color normal = pokemon.estaVivo() ? new Color(50, 150, 50) : new Color(100, 100, 100);
+        Color hover = pokemon.estaVivo() ? new Color(70, 170, 70) : new Color(120, 120, 120);
+        ComponentStyles.styleButton(boton,
+            normal,
+            hover,
+            Color.BLACK, // texto en negro
+            Color.GREEN,
+            new Color(200, 200, 200),
+            Color.DARK_GRAY
+        );
         boton.setEnabled(pokemon.estaVivo());
-        
-        boton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                if (boton.isEnabled()) {
-                    boton.setBackground(new Color(70, 170, 70));
-                }
-            }
-            
-            @Override
-            public void mouseExited(MouseEvent e) {
-                if (pokemon.estaVivo()) {
-                    boton.setBackground(new Color(50, 150, 50));
-                }
-            }
-        });
         
         return boton;
     }
