@@ -1,0 +1,136 @@
+@startuml diagrama_flujo
+
+skinparam backgroundColor #FEFEFE
+skinparam activityBackgroundColor #E3F2FD
+skinparam activityBorderColor #1976D2
+skinparam activityDiamondBackgroundColor #FFF9C4
+skinparam activityDiamondBorderColor #F57F17
+
+start
+
+:Menu Principal;
+
+if (Opcion?) then (Nuevo Juego)
+  
+  :Seleccion de Pokemon;
+  note right
+    Jugador selecciona
+    3 Pokemon de 9 disponibles
+  end note
+  
+  repeat
+    :Mostrar Pokemon disponibles;
+    :Seleccionar Pokemon;
+  repeat while (Equipo < 3?) is (Si)
+  
+  :Confirmar seleccion;
+  
+  :Seleccion Pokemon Inicial;
+  note right
+    Elegir cual Pokemon
+    comenzara el combate
+  end note
+  
+  :Mostrar equipo seleccionado;
+  :Elegir Pokemon inicial;
+  
+  :Rival elige Pokemon aleatorio;
+  
+  :Iniciar Combate;
+  
+  partition "Ciclo de Combate" {
+    repeat
+      :Turno del Jugador;
+      
+      :Mostrar estado actual;
+      note left
+        - HP de ambos Pokemon
+        - Movimientos disponibles
+        - Items en bolsa
+      end note
+      
+      :Elegir accion;
+      
+      if (Tipo de accion?) then (Luchar)
+        :Seleccionar movimiento;
+        :Calcular dano con multiplicador de tipo;
+        :Pokemon rival recibe dano;
+        
+      elseif (Bolsa) then
+        :Mostrar items disponibles;
+        :Seleccionar item;
+        :Usar item en Pokemon activo;
+        
+      elseif (Cambiar) then
+        :Mostrar equipo;
+        :Seleccionar nuevo Pokemon;
+        :Cambiar Pokemon activo;
+      endif
+      
+      :Turno del Rival (IA);
+      note right
+        IA decide:
+        - Usar pocion si HP < 33%
+        - Atacar con movimiento aleatorio
+      end note
+      
+      if (HP rival < 33%?) then (Si)
+        if (Tiene pociones?) then (Si)
+          :Rival usa pocion;
+        else (No)
+          :Rival ataca;
+        endif
+      else (No)
+        :Rival ataca;
+      endif
+      
+      :Actualizar estado;
+      
+      if (Pokemon jugador derrotado?) then (Si)
+        if (Tiene Pokemon vivos?) then (Si)
+          :Cambiar Pokemon obligatorio;
+        else (No)
+          #FFE0E0:DERROTA;
+          stop
+        endif
+      endif
+      
+      if (Pokemon rival derrotado?) then (Si)
+        if (Rival tiene Pokemon vivos?) then (Si)
+          :Rival saca siguiente Pokemon;
+        else (No)
+          #E0FFE0:VICTORIA;
+          stop
+        endif
+      endif
+      
+      :Incrementar turno;
+      
+    repeat while (Combate activo?) is (Si)
+  }
+  
+  :Mostrar resultado final;
+  
+  if (Resultado?) then (Victoria)
+    :Pantalla de Victoria;
+  else (Derrota)
+    :Pantalla de Derrota;
+  endif
+  
+  :Volver al Menu;
+
+else (Salir)
+  stop
+endif
+
+stop
+
+legend right
+  |= Color |= Significado |
+  | <#E3F2FD> | Proceso normal |
+  | <#FFF9C4> | Decision |
+  | <#E0FFE0> | Victoria |
+  | <#FFE0E0> | Derrota |
+endlegend
+
+@enduml

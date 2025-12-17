@@ -1,0 +1,275 @@
+@startuml diagrama_clases
+
+' Estilos
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+skinparam backgroundColor #FEFEFE
+skinparam classBackgroundColor #E8F5E9
+skinparam classBorderColor #2E7D32
+
+' Paquete principal
+package "pokemon" {
+    class Pokemon {
+        - nombre: String
+        - tipos: List<TipoElemento>
+        - movimientos: List<Movimiento>
+        - vida: int
+        - vidaMax: int
+        - ataque: int
+        - defensa: int
+        - spriteFrontal: String
+        - spriteTrasero: String
+        + agregarMovimiento(Movimiento)
+        + atacar(Pokemon, Movimiento)
+        + recibirDano(int)
+        + curar(int)
+        + estaVivo(): boolean
+    }
+    
+    class Entrenador {
+        - nombre: String
+        - equipo: List<Pokemon>
+        - bolsa: List<Item>
+        + agregarPokemon(Pokemon)
+        + agregarItem(Item)
+        + tienePokemonVivo(): boolean
+    }
+    
+    class Item {
+        - nombre: String
+        - curacion: int
+        - cantidad: int
+        + usar(Pokemon)
+        + disponible(): boolean
+    }
+    
+    class MainApp {
+        + {static} main(String[])
+    }
+}
+
+' Paquete modelo
+package "pokemon.modelo" {
+    class GameState {
+        - estadoActual: EstadoJuego
+        - jugador: Entrenador
+        - rival: Entrenador
+        - pokemonActivoJugador: Pokemon
+        - pokemonActivoRival: Pokemon
+        - pokemonDisponibles: List<Pokemon>
+        - logCombate: List<String>
+        - turnoActual: int
+        - observadores: List<GameStateObserver>
+        + cambiarEstado(EstadoJuego)
+        + seleccionarPokemon(Pokemon)
+        + ejecutarAtaque(Movimiento)
+        + usarItem(Item)
+        + cambiarPokemon(Pokemon)
+        + agregarObservador(GameStateObserver)
+    }
+    
+    enum EstadoJuego {
+        MENU_PRINCIPAL
+        SELECCION_POKEMON
+        SELECCION_INICIAL
+        COMBATE
+        VICTORIA
+        DERROTA
+    }
+    
+    interface GameStateObserver {
+        + onEstadoCambiado(GameState)
+    }
+}
+
+' Paquete controlador
+package "pokemon.controlador" {
+    class GameController {
+        - modelo: GameState
+        + iniciarNuevoJuego()
+        + seleccionarPokemon(Pokemon)
+        + atacar(Movimiento)
+        + usarItem(Item)
+        + cambiarPokemon(Pokemon)
+    }
+}
+
+' Paquete vista
+package "pokemon.vista" {
+    class GameFrame {
+        - controlador: GameController
+        - modelo: GameState
+        - cardLayout: CardLayout
+        + onEstadoCambiado(GameState)
+    }
+    
+    class MenuPanel {
+        - controlador: GameController
+    }
+    
+    class SeleccionPokemonPanel {
+        - controlador: GameController
+        + actualizar()
+    }
+    
+    class SeleccionInicialPanel {
+        - controlador: GameController
+        + actualizar()
+    }
+    
+    class CombatePanel {
+        - controlador: GameController
+        + actualizar()
+    }
+    
+    class ResultadoPanel {
+        - controlador: GameController
+        + actualizar()
+    }
+}
+
+' Paquete tipos
+package "pokemon.tipos" {
+    abstract class TipoElemento {
+        # nombre: String
+        # fuerza: double
+        + getNombre(): String
+        + getFuerza(): double
+    }
+    
+    class TipoNormal {
+        + TipoNormal()
+    }
+    
+    class TipoFuego {
+        + TipoFuego()
+    }
+    
+    class TipoAgua {
+        + TipoAgua()
+    }
+    
+    class TipoElectrico {
+        + TipoElectrico()
+    }
+    
+    class TipoPlanta {
+        + TipoPlanta()
+    }
+    
+    class TipoVeneno {
+        + TipoVeneno()
+    }
+}
+
+' Paquete movimientos
+package "pokemon.movimientos" {
+    class Movimiento {
+        # nombre: String
+        # tipo: TipoElemento
+        # potencia: int
+        # mostrador: IMostrador
+        # calculadorDano: ICalculadorDano
+        # calculadorMultiplicador: ICalculadorMultiplicador
+        + aplicarEfecto(Pokemon, Pokemon)
+        # obtenerMultiplicadorTipo(Pokemon): double
+    }
+    
+    class MovimientoCuracion {
+        - curacion: int
+        + aplicarEfecto(Pokemon, Pokemon)
+    }
+    
+    class MovimientoMultiGolpe {
+        - golpes: int
+        + aplicarEfecto(Pokemon, Pokemon)
+    }
+    
+    class MovimientoEstado {
+        + aplicarEfecto(Pokemon, Pokemon)
+    }
+}
+
+' Paquete interfaces
+package "pokemon.interfaces" {
+    interface ICalculadorDano {
+        + calcularDano(int, int, int, double): int
+    }
+    
+    interface ICalculadorMultiplicador {
+        + calcularMultiplicador(double, double): double
+    }
+    
+    interface IMostrador {
+        + mostrarMensaje(String, String)
+        + mostrarMensajeCombate(String)
+    }
+}
+
+' Paquete calculadores
+package "pokemon.calculadores" {
+    class CalculadorDanoBasico {
+        + calcularDano(int, int, int, double): int
+    }
+    
+    class CalculadorMultiplicadorFuerza {
+        + calcularMultiplicador(double, double): double
+    }
+}
+
+' Relaciones - Herencia
+TipoNormal --|> TipoElemento
+TipoFuego --|> TipoElemento
+TipoAgua --|> TipoElemento
+TipoElectrico --|> TipoElemento
+TipoPlanta --|> TipoElemento
+TipoVeneno --|> TipoElemento
+
+MovimientoCuracion --|> Movimiento
+MovimientoMultiGolpe --|> Movimiento
+MovimientoEstado --|> Movimiento
+
+CalculadorDanoBasico ..|> ICalculadorDano
+CalculadorMultiplicadorFuerza ..|> ICalculadorMultiplicador
+GameFrame ..|> GameStateObserver
+
+' Relaciones - Composición
+Entrenador *-- Pokemon
+Entrenador *-- Item
+Pokemon *-- TipoElemento
+Pokemon *-- Movimiento
+GameState *-- Entrenador
+GameState o-- GameStateObserver
+
+' Relaciones - Dependencia
+Movimiento ..> ICalculadorDano
+Movimiento ..> ICalculadorMultiplicador
+Movimiento ..> IMostrador
+GameController --> GameState
+GameFrame --> GameController
+MenuPanel --> GameController
+SeleccionPokemonPanel --> GameController
+SeleccionInicialPanel --> GameController
+CombatePanel --> GameController
+ResultadoPanel --> GameController
+
+GameState ..> EstadoJuego
+
+note right of GameState
+  Patrón Observer:
+  Notifica cambios a la vista
+end note
+
+note right of GameController
+  Patrón Facade:
+  Simplifica interacción
+  con el modelo
+end note
+
+note right of ICalculadorDano
+  Patrón Strategy:
+  Permite cambiar
+  algoritmos de cálculo
+end note
+
+@enduml
