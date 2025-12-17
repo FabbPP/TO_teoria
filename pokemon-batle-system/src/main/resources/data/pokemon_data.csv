@@ -1,0 +1,10 @@
+Nombre,Tipos,Vida,Ataque,Defensa,Movimientos,SpriteFront,SpriteBack
+Pikachu,Electrico,80,25,5,Impactrueno;Placaje;Doble Bofeton;Recuperacion,/gif/pikachu_front.gif,/gif/pikachu_back.gif
+Charmander,Fuego,95,22,6,Llamarada;Arañazo;Recuperacion,/gif/charmander_front.gif,/gif/charmander_back.gif
+Squirtle,Agua,90,20,7,Pistola Agua;Placaje;Recuperacion,/gif/squirtle_front.gif,/gif/squirtle_back.gif
+Bulbasaur,Planta;Veneno,100,18,8,Latigo Cepa;Bomba Lodo;Sintesis,/gif/bulbasaur_front.gif,/gif/bulbasaur_back.gif
+Eevee,Normal,85,23,6,Tackle;Ataque Rapido;Descanso,/gif/eevee_front.gif,/gif/eevee_back.gif
+Psyduck,Agua,88,21,5,Confusion;Arañazo;Recuperacion,/gif/psyduck_front.gif,/gif/psyduck_back.gif
+Growlithe,Fuego,92,24,6,Ascuas;Mordisco;Recuperacion,/gif/growlithe_front.gif,/gif/growlithe_back.gif
+Oddish,Planta;Veneno,87,19,7,Absorber;Polvo Veneno;Megaagotar,/gif/oddish_front.gif,/gif/oddish_back.gif
+Jigglypuff,Normal,110,17,4,Canto;Doble Bofeton;Descanso,/gif/jigglypuff_front.gif,/gif/jigglypuff_back.gif

@@ -6,7 +6,7 @@ import com.pokemon.interfaces.IMostrador;
 import com.pokemon.interfaces.ICalculadorDano;
 import com.pokemon.interfaces.ICalculadorMultiplicador;
 import com.pokemon.calculadores.CalculadorDanoBasico;
-import com.pokemon.calculadores.CalculadorMultiplicadorFuerza;
+import com.pokemon.calculadores.CalculadorMultiplicadorTipos;
 import static com.pokemon.Global.*;
 
 public class Movimiento {
@@ -14,7 +14,6 @@ public class Movimiento {
     protected TipoElemento tipo;
     protected int potencia;
     
-    // DIP: Dependencias son abstracciones
     protected IMostrador mostrador;
     protected ICalculadorDano calculadorDano;
     protected ICalculadorMultiplicador calculadorMultiplicador;
@@ -28,59 +27,44 @@ public class Movimiento {
         this.potencia = potencia;
         this.mostrador = mostrador;
         this.calculadorDano = calcDano != null ? calcDano : new CalculadorDanoBasico();
-        this.calculadorMultiplicador = calcMult != null ? calcMult : new CalculadorMultiplicadorFuerza();
+        this.calculadorMultiplicador = calcMult != null ? calcMult : new CalculadorMultiplicadorTipos();
     }
     
-    public String getNombre() {
-        return nombre;
-    }
+    public String getNombre() { return nombre; }
+    public TipoElemento getTipo() { return tipo; }
+    public int getPotencia() { return potencia; }
     
-    public TipoElemento getTipo() {
-        return tipo;
-    }
-    
-    public int getPotencia() {
-        return potencia;
-    }
-    
-    // SRP: Método con responsabilidad única - calcular multiplicador
-     
+    // Cálculo por tipos
     protected double obtenerMultiplicadorTipo(Pokemon objetivo) {
-        double fuerzaAtaque = tipo.getFuerza();
+        double multiplicadorTotal = 1.0;
         
-        double fuerzaDefensaTotal = 0.0;
+        // Iteramos sobre todos los tipos del objetivo 
         for (TipoElemento tipoDefensor : objetivo.getTipos()) {
-            fuerzaDefensaTotal += tipoDefensor.getFuerza();
+            // Multiplicamos acumulativamente
+            multiplicadorTotal *= calculadorMultiplicador.calcularMultiplicador(this.tipo, tipoDefensor);
         }
-        double fuerzaDefensaPromedio = fuerzaDefensaTotal / objetivo.getTipos().size();
         
-        // DIP: Usa abstracción para calcular
-        return calculadorMultiplicador.calcularMultiplicador(fuerzaAtaque, fuerzaDefensaPromedio);
+        return multiplicadorTotal;
     }
     
-    //SRP: Método con responsabilidad única - mostrar mensajes
     protected void mostrarMensajeEfectividad(double multiplicador) {
         if (mostrador == null) return;
         
-        if (multiplicador >= 1.5) {
-            mostrador.mostrarMensaje("¡El tipo es muy fuerte contra el oponente!", YELLOW);
-        } else if (multiplicador >= 1.2) {
-            mostrador.mostrarMensaje("El tipo tiene ventaja.", GREEN);
-        } else if (multiplicador <= 0.7) {
-            mostrador.mostrarMensaje("El tipo es débil contra el oponente...", CYAN);
-        } else if (multiplicador <= 0.9) {
-            mostrador.mostrarMensaje("El tipo tiene desventaja.", CYAN);
+        if (multiplicador >= 2.0) {
+            mostrador.mostrarMensaje("¡Es súper eficaz!", YELLOW);
+        } else if (multiplicador >= 1.2) { 
+            mostrador.mostrarMensaje("Es muy eficaz.", GREEN);
+        } else if (multiplicador == 0.0) {
+            mostrador.mostrarMensaje("No afecta al objetivo...", RESET);
+        } else if (multiplicador <= 0.5) {
+            mostrador.mostrarMensaje("No es muy eficaz...", CYAN);
         }
     }
     
-    //OCP: Método virtual para extensión
-    
     public void aplicarEfecto(Pokemon atacante, Pokemon objetivo) {
         if (potencia > 0) {
-            // SRP: Cada cálculo delegado a su clase responsable
             double multiplicador = obtenerMultiplicadorTipo(objetivo);
             
-            // DIP: Usa abstracción para calcular daño
             int dmg = calculadorDano.calcularDano(
                 atacante.getAtaque(),
                 potencia,
@@ -88,21 +72,17 @@ public class Movimiento {
                 multiplicador
             );
             
-            // DIP: Usa abstracción para mostrar mensajes
             if (mostrador != null) {
                 mostrador.mostrarMensajeCombate(
                     atacante.getNombre() + " usa " + nombre +
-                    " (" + tipo.getNombre() + ", Fuerza: " + (int) tipo.getFuerza() +
-                    ") y causa " + dmg + " de daño a " + objetivo.getNombre() + "."
+                    " y causa " + dmg + " de daño a " + objetivo.getNombre() + "."
                 );
-                
                 mostrarMensajeEfectividad(multiplicador);
             }
-            
             objetivo.recibirDano(dmg);
         } else {
             if (mostrador != null) {
-                mostrador.mostrarMensaje(atacante.getNombre() + " usa " + nombre + ".",RESET );
+                mostrador.mostrarMensaje(atacante.getNombre() + " usa " + nombre + ".", RESET);
             }
         }
     }
