@@ -6,7 +6,7 @@ import com.pokemon.controlador.GameController;
 import javax.swing.*;
 import java.awt.*;
 
-//VISTA PRINCIPAL - Ventana del juego que contiene todos los paneles
+// - Ventana del juego que contiene todos los paneles
 
 public class GameFrame extends JFrame implements GameStateObserver {
     private GameController controlador;

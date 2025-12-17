@@ -16,12 +16,8 @@ package com.pokemon.singleton;
  */
 public class ControlJuego {
     
-    // IMPLEMENTACIÓN DEL PATRÓN SINGLETON
-    
-    // 1. Instancia única (static) - Inicialización temprana (Eager)
     private static final ControlJuego INSTANCE = new ControlJuego();
     
-    // 2. Constructor PRIVADO - Nadie puede hacer new ControlJuego()
     private ControlJuego() {
         // Inicializar valores por defecto
         this.nivelActual = 1;
@@ -38,12 +34,10 @@ public class ControlJuego {
         System.out.println("[SINGLETON] ControlJuego inicializado");
     }
     
-    // 3. Método público para obtener la ÚNICA instancia
     public static ControlJuego getInstance() {
         return INSTANCE;
     }
     
-    // ATRIBUTOS DEL ESTADO GLOBAL
     
     // Estado básico del jugador
     private int nivelActual;           // Nivel actual del jugador
@@ -101,9 +95,6 @@ public class ControlJuego {
         return danoTotalRecibido;
     }
     
-    // METODOS DE MODIFICACIÓN DEL ESTADO
-    
-    // Aumenta el puntaje del jugador
     
     public void agregarPuntaje(int puntos) {
         this.puntaje += puntos;
@@ -113,7 +104,6 @@ public class ControlJuego {
         verificarSubidaNivel();
     }
     
-    // Resta una vida al jugador
      
     public void perderVida() {
         if (vidas > 0) {
@@ -126,7 +116,6 @@ public class ControlJuego {
         }
     }
     
-    //Recupera una vida (máximo 5)
     
     public void recuperarVida() {
         if (vidas < 5) {
@@ -135,15 +124,12 @@ public class ControlJuego {
         }
     }
     
-    //Registra una victoria en combate
-     
     public void registrarVictoria() {
         combatesGanados++;
         agregarPuntaje(500);  // 500 puntos por victoria
         System.out.println("[ControlJuego] ¡Victoria! Total: " + combatesGanados);
     }
     
-    //Registra una derrota en combate
      
     public void registrarDerrota() {
         combatesPerdidos++;
@@ -151,7 +137,6 @@ public class ControlJuego {
         System.out.println("[ControlJuego] Derrota registrada. Total: " + combatesPerdidos);
     }
     
-    //Registra la captura de un Pokemon
      
     public void registrarCaptura() {
         pokemonCapturados++;
@@ -159,14 +144,11 @@ public class ControlJuego {
         System.out.println(" [ControlJuego] ¡Pokemon capturado! Total: " + pokemonCapturados);
     }
     
-    //Registra el uso de un item
-     
     public void registrarUsoItem() {
         itemsUsados++;
         System.out.println("[ControlJuego] Item usado. Total: " + itemsUsados);
     }
     
-    //Registra un ataque crítico
      
     public void registrarAtaqueCritico() {
         ataquesCriticos++;
@@ -174,20 +156,16 @@ public class ControlJuego {
         System.out.println("[ControlJuego] ¡Ataque crítico! Total: " + ataquesCriticos);
     }
     
-    //Registra daño infligido al enemigo
      
     public void registrarDanoInfligido(int dano) {
         danoTotalInfligido += dano;
         agregarPuntaje(dano / 10);  // 1 punto cada 10 de daño
     }
     
-    //Registra daño recibido del enemigo
-     
     public void registrarDanoRecibido(int dano) {
         danoTotalRecibido += dano;
     }
     
-    //Verifica si el jugador debe subir de nivel
     
     private void verificarSubidaNivel() {
         int nuevoNivel = (puntaje / 1000) + 1;
@@ -198,7 +176,6 @@ public class ControlJuego {
         }
     }
     
-    //Calcula el ratio de victorias
      
     public double getRatioVictorias() {
         int totalCombates = combatesGanados + combatesPerdidos;
@@ -206,15 +183,12 @@ public class ControlJuego {
         return (double) combatesGanados / totalCombates * 100;
     }
     
-    //Calcula el daño promedio por combate
      
     public double getPromedioDanoPorCombate() {
         int totalCombates = combatesGanados + combatesPerdidos;
         if (totalCombates == 0) return 0.0;
         return (double) danoTotalInfligido / totalCombates;
     }
-    
-    //Reinicia el juego (nuevo inicio)
      
     public void reiniciarJuego() {
         this.nivelActual = 1;
@@ -234,17 +208,16 @@ public class ControlJuego {
     //Muestra un resumen completo del estado del juego
      
     public void mostrarEstadoCompleto() {
-        System.out.println("\n" + "=".repeat(60));
         System.out.println("--- ESTADO GLOBAL DEL JUEGO (SINGLETON)");
         System.out.println("=".repeat(60));
         System.out.println("- Nivel:              " + nivelActual);
         System.out.println("-  Puntaje:            " + puntaje);
         System.out.println("-   Vidas:             " + vidas);
-        System.out.println("\n--- ESTADÍSTICAS DE COMBATE ---");
+        System.out.println("\n--- ESTADISTICAS DE COMBATE ---");
         System.out.println("-  Victorias:          " + combatesGanados);
         System.out.println("-  Derrotas:           " + combatesPerdidos);
         System.out.println("- Ratio de victorias: " + String.format("%.2f", getRatioVictorias()) + "%");
-        System.out.println("\n--- ESTADÍSTICAS GENERALES ---");
+        System.out.println("\n--- ESTADISTICAS GENERALES ---");
         System.out.println("- Pokemon capturados: " + pokemonCapturados);
         System.out.println("- Items usados:       " + itemsUsados);
         System.out.println("- Ataques críticos:   " + ataquesCriticos);

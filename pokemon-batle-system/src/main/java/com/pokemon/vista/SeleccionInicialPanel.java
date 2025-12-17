@@ -6,9 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-/**
- * Panel para elegir el Pokemon inicial del combate
- */
+
 public class SeleccionInicialPanel extends JPanel {
     private GameController controlador;
     private JPanel pokemonPanel;

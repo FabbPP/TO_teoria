@@ -8,9 +8,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Panel para seleccionar los 3 Pokemon iniciales
- */
+
 public class SeleccionPokemonPanel extends JPanel {
     private GameController controlador;
     private JPanel gridPanel;

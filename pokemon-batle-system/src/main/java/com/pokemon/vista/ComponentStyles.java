@@ -7,9 +7,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-/**
- * Helper para aplicar estilos consistentes a componentes (por ahora botones)
- */
+
 public class ComponentStyles {
     public static void styleButton(JButton boton,
                                    Color normalBg, Color hoverBg,

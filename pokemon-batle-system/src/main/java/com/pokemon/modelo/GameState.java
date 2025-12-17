@@ -14,7 +14,6 @@ import java.util.*;
 public class GameState {
     
     private ControlJuego controlJuego;  // Referencia al singleton
-    
     // Estados del juego
     public enum EstadoJuego {
         MENU_PRINCIPAL,
@@ -24,7 +23,6 @@ public class GameState {
         VICTORIA,
         DERROTA
     }
-    
     private EstadoJuego estadoActual;
     private Entrenador jugador;
     private Entrenador rival;
@@ -380,6 +378,8 @@ public class GameState {
                 // SINGLETON: Registrar victoria
                 controlJuego.registrarVictoria();
                 cambiarEstado(EstadoJuego.VICTORIA);
+                
+                getControlJuego().mostrarEstadoCompleto();
                 return;
             }
         }

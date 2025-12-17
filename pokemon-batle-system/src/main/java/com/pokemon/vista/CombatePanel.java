@@ -9,9 +9,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
 
-/**
- * Panel principal de combate
- */
+
 public class CombatePanel extends JPanel {
     private GameController controlador;
     
@@ -120,7 +118,7 @@ public class CombatePanel extends JPanel {
         infoPanel.add(rivalVidaLabel);
         
         // Agregamos el panel personalizado
-        panel.add(rivalSpritePanel, BorderLayout.WEST);
+        panel.add(rivalSpritePanel, BorderLayout.EAST);
         panel.add(infoPanel, BorderLayout.CENTER);
         
         return panel;

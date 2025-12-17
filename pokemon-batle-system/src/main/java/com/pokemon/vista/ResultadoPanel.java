@@ -6,9 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-/**
- * Panel de resultado del combate (Victoria o Derrota)
- */
+
 public class ResultadoPanel extends JPanel {
     private GameController controlador;
     private JLabel tituloLabel;

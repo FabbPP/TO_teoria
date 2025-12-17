@@ -5,9 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-/**
- * Panel del menú principal
- */
+
 public class MenuPanel extends JPanel {
     private GameController controlador;
     
